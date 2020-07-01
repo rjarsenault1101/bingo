@@ -68,6 +68,7 @@ textarea {
   resize: none;
   height: 100px;
   width: 500px;
+  scroll-behavior: smooth;
 }
 
 textarea:focus, input:focus {
@@ -157,6 +158,22 @@ div input {
     color: #000000;
     width: 100px;
     height: 100px;
+}
+
+.fixed-header {
+  width: 100%;
+  position: fixed;        
+  background: #333;
+  padding: 10px 0;
+  color: #fff;
+}
+.fixed-header{
+  top: 0;
+}
+
+.page-title{
+  width: 80%;
+  margin: 0 auto; /* Center the DIV horizontally */
 }
 
 /*==================================================================
