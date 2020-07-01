@@ -193,22 +193,3 @@ th, td {
   background-color: #333333;
 }
 
-.table100.ver2 .row100:hover td {
-  background-color: #658c45;
-  color: #fff;
-}
-
-.table100.ver2 .hov-column-ver2 {
-  background-color: #658c45;
-  color: #fff;
-}
-
-.table100.ver2 .hov-column-head-ver2 {
-  background-color: #484848 !important;
-}
-
-.table100.ver2 .row100 td:hover {
-  background-color: #fbb040;
-  color: #fff;
-}
-
