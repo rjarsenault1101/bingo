@@ -3,9 +3,15 @@ import random
 
 # Create your views here.
 def index(request):
-    context = {
-        'numbers': generateNumbers()
-    }
+    if request.session.get('numbers', None) != None:
+        context = {
+            'numbers': request.session['numbers']
+        }
+    else:
+        context = {
+            'numbers': generateNumbers()
+        }
+    request.session['numbers'] = context['numbers']
     return render(request, 'index.html', context)
 
 def generateNumbers(): 

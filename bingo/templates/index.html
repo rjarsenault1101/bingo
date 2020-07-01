@@ -42,52 +42,13 @@
 							<tr class="cardRow">
 							{% endif %}
 								<td 
-									{% if forloop.counter == 1 or forloop.counter == 5 or forloop.parentloop.counter <= 5 or forloop.parentloop.counter >= 20 %}
+									{% if forloop.counter <= 5 or forloop.counter > 20 %}
 												class="free"
 									{% endif %}
 								>
 									{{ cell }}
 								</td>
 							{% endfor %}
-							{% comment %} <tr class="cardRow">
-								<td class="free">1</td>
-								<td class="free">2</td>
-								<td class="free">3</td>
-								<td class="free">4</td>
-								<td class="free">5</td>
-							</tr>
-
-							<tr class="cardRow">
-								<td class="free">6</td>
-								<td>7</td>
-								<td>8</td>
-								<td>9</td>
-								<td class="free">10</td>
-							</tr>
-
-							<tr class="cardRow">
-								<td class="free">11</td>
-								<td>12</td>
-								<td class="free">free</td>
-								<td>13</td>
-								<td class="free">14</td>
-							</tr>
-
-							<tr class="cardRow">
-								<td class="free">15</td>
-								<td>16</td>
-								<td>17</td>
-								<td>18</td>
-								<td class="free">19</td>
-							</tr>
-
-							<tr class="cardRow">
-								<td class="free">20</td>
-								<td class="free">21</td>
-								<td class="free">22</td>
-								<td class="free">23</td>
-								<td class="free">24</td>
-							</tr> {% endcomment %}
 						</tbody>
 					</table>
 				</div>
@@ -101,10 +62,6 @@
 
 			</div>
 		</div>
-		<!-- <div class="row">
-			<div class="col-md-6">
-			</div>
-		</div> -->
 	</div>
 	
 
