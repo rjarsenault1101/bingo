@@ -37,8 +37,17 @@ textarea {
 }
 
 .bingo-button {
-  padding: 100px;
+  padding-top: 100px;
+  box-sizing: content-box;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-card-button {
+  display: inline;
+  display: flex;
+  padding: 50px;
   align-items: center;
   justify-content: center;
 }

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import random
 
 # Create your views here.
@@ -18,3 +18,10 @@ def generateNumbers():
     list= random.sample(range(1, 100), 25)
     list[12]="FREE"
     return list
+
+def new_card(request):
+    context = {
+            'numbers': generateNumbers()
+    }
+    request.session['numbers'] = context['numbers']
+    return redirect('index')
