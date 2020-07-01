@@ -27,41 +27,6 @@ body, html {
 	font-family: sans-serif;
 }
 
-/* ------------------------------------ */
-a {
-	margin: 0px;
-	transition: all 0.4s;
-	-webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-}
-
-a:focus {
-	outline: none !important;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-/* ------------------------------------ */
-h1,h2,h3,h4,h5,h6 {margin: 0px;}
-
-p {margin: 0px;}
-
-ul, li {
-	margin: 0px;
-	list-style-type: none;
-}
-
-
-/* ------------------------------------ */
-input {
-  display: block;
-	outline: none;
-	border: none !important;
-}
-
 textarea {
   display: block;
   outline: none;
@@ -69,14 +34,6 @@ textarea {
   height: 100px;
   width: 500px;
   scroll-behavior: smooth;
-}
-
-textarea:focus, input:focus {
-  border-color: transparent !important;
-}
-
-button:hover {
-	cursor: pointer;
 }
 
 .bingo-button {
@@ -102,9 +59,6 @@ position: fixed;
 background: #8c2004;
 padding: 10px 0;
 color: #fff;
-}
-.fixed-header{
-top: 0;
 }
 
 .page-title{
@@ -149,41 +103,34 @@ th, td {
   border: 3px solid #fbb040;
   font-weight: unset;
   padding-right: 10px;
-}
-
-.column100 {
   width: 130px;
   padding-left: 25px;
 }
 
-.row100.head th {
+.cardRow th {
   padding-top: 24px;
   padding-bottom: 20px;
   text-align: center;
 }
 
-.row100 td {
-  padding-top: 18px;
-  padding-bottom: 14px;
+.cardRow td {
+  padding-top: 25px;
+  padding-bottom: 25px;
   text-align: center;
 }
-
-
-/*==================================================================
-[ Ver2 ]*/
 .free {
   background-color: #5c8727;
   color: #fff !important;
 }
 
-.table100.ver2 td {
+.table100 td {
   font-family: Montserrat-Regular;
   font-size: 24px;
   color: #808080;
   line-height: 1.4;
 }
 
-.table100.ver2 th {
+.table100 th {
   font-family: Montserrat-Medium;
   font-size: 24px;
   color: #fff;
