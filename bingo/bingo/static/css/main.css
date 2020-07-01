@@ -106,6 +106,10 @@ th, td {
   width: 130px;
   padding-left: 25px;
 }
+td {
+  cursor: pointer;
+  background-color: #ffffff;
+}
 
 .cardRow th {
   padding-top: 24px;
