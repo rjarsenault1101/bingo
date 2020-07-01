@@ -99,7 +99,7 @@ div input {
 .fixed-header {
 width: 100%;
 position: fixed;        
-background: #333;
+background: #8c2004;
 padding: 10px 0;
 color: #fff;
 }
@@ -137,19 +137,16 @@ margin: 0 auto; /* Center the DIV horizontally */
   flex-wrap: wrap;
   padding: 33px 30px;
 }
-
-.wrap-table100 {
-  width: 1300px;
-}
-
 /*//////////////////////////////////////////////////////////////////
 [ Table ]*/
 table {
+  border: 3px solid #fbb040;
   width: 100%;
   background-color: #fff;
 }
 
 th, td {
+  border: 3px solid #fbb040;
   font-weight: unset;
   padding-right: 10px;
 }
@@ -170,60 +167,25 @@ th, td {
   padding-bottom: 14px;
   text-align: center;
 }
-/*==================================================================
-[ Ver2 ]*/
-.table100.ver2 td {
-  font-family: Montserrat-Regular;
-  font-size: 14px;
-  color: #808080;
-  line-height: 1.4;
-}
 
-.table100.ver2 th {
-  font-family: Montserrat-Medium;
-  font-size: 12px;
-  color: #fff;
-  line-height: 1.4;
-  text-transform: uppercase;
-
-  background-color: #333333;
-}
-
-.table100.ver2 .row100:hover td {
-  background-color: #83d160;
-  color: #fff;
-}
-
-.table100.ver2 .hov-column-ver2 {
-  background-color: #83d160;
-  color: #fff;
-}
-
-.table100.ver2 .hov-column-head-ver2 {
-  background-color: #484848 !important;
-}
-
-.table100.ver2 .row100 td:hover {
-  background-color: #57b846;
-  color: #fff;
-}
 
 /*==================================================================
 [ Ver2 ]*/
 .free {
-  background-color: #a3ff8a;
+  background-color: #5c8727;
+  color: #fff !important;
 }
 
 .table100.ver2 td {
   font-family: Montserrat-Regular;
-  font-size: 14px;
+  font-size: 24px;
   color: #808080;
   line-height: 1.4;
 }
 
 .table100.ver2 th {
   font-family: Montserrat-Medium;
-  font-size: 12px;
+  font-size: 24px;
   color: #fff;
   line-height: 1.4;
   text-transform: uppercase;
@@ -232,12 +194,12 @@ th, td {
 }
 
 .table100.ver2 .row100:hover td {
-  background-color: #83d160;
+  background-color: #658c45;
   color: #fff;
 }
 
 .table100.ver2 .hov-column-ver2 {
-  background-color: #83d160;
+  background-color: #658c45;
   color: #fff;
 }
 
@@ -246,7 +208,7 @@ th, td {
 }
 
 .table100.ver2 .row100 td:hover {
-  background-color: #57b846;
+  background-color: #fbb040;
   color: #fff;
 }
 
