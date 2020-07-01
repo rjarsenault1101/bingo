@@ -6,7 +6,6 @@
 		var table2 = $(this).parent().parent();
 		var verTable = $(table1).data('vertable')+"";
 		var column = $(this).data('column') + ""; 
-
 		$(table2).find("."+column).addClass('hov-column-'+ verTable);
 		$(table1).find(".row100.head ."+column).addClass('hov-column-head-'+ verTable);
 	});
@@ -19,10 +18,6 @@
 
 		$(table2).find("."+column).removeClass('hov-column-'+ verTable);
 		$(table1).find(".row100.head ."+column).removeClass('hov-column-head-'+ verTable);
-	});
-	
-	$('.column100').on('click',funcition(){
-		alert("Clicked!");
 	});
 
 })(jQuery);

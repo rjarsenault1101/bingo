@@ -159,11 +159,6 @@ th, td {
   padding-left: 25px;
 }
 
-.column100.column1 {
-  width: 265px;
-  padding-left: 42px;
-}
-
 .row100.head th {
   padding-top: 24px;
   padding-bottom: 20px;
@@ -215,8 +210,8 @@ th, td {
 
 /*==================================================================
 [ Ver2 ]*/
-.table100.ver2 tbody tr:nth-child(even) {
-  background-color: #eaf8e6;
+.free {
+  background-color: #a3ff8a;
 }
 
 .table100.ver2 td {
