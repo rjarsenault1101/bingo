@@ -25,7 +25,7 @@ SECRET_KEY = '(11sjy+)wzh5cp!y6@@#t6c#f(6!t9bqh($u3&7fu4pef%sp#6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rj-136b44df.localhost.run', 'localhost']
 
 
 # Application definition
@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'caller',
     'init',
 ]
+ASGI_APPLICATION='bingo.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
