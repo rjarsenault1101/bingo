@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import random
+from .models import Card
 
 # Create your views here.
 def index(request):
@@ -8,43 +9,42 @@ def index(request):
             'numbers': request.session['numbers']
         }
     else:
+        numbers = generate_card()[0]
         context = {
-            'numbers': generate_card()
+            'card_id': id,
+            'numbers': list(numbers)
         }
     request.session['numbers'] = context['numbers']
     return render(request, 'index.html', context)
 
 def generate_card(): 
-    b = [i for i in range(1,16)]
-    i = [i for i in range(16,31)]
-    n = [i for i in range(31,46)]
-    g = [i for i in range(46,61)]
-    o = [i for i in range(61,76)]
-    list=[]
-    for value in range(25): 
-        if value % 5 == 0: 
-            list.append(get_number(b))
-        if value % 5 == 1: 
-            list.append(get_number(i))
-        if value % 5 == 2: 
-            list.append(get_number(n))
-        if value % 5 == 3: 
-            list.append(get_number(g))
-        if value % 5 == 4: 
-            list.append(get_number(o))
-        print(list[value])
-    list[12]="FREE"
-    return list
+    b = random.sample(range(1,16), 5)
+    i = random.sample(range(16,31), 5)
+    n = random.sample(range(31,46), 5)
+    g = random.sample(range(46,61), 5)
+    o = random.sample(range(61,76), 5)
+    numbers = b + i + n + g + o 
+    numbers[12]="FREE"
+    card = Card(b=b, i=i, n=n, g=g, o=o)
+    card.save()
+    numbers = transpose(numbers)
+    return [numbers, card.id]
 
-def get_number(number_list):
-    number = random.choice(number_list)
-    number_list.remove(number)
-    return number
-
+def transpose(list):
+    new_list = []
+    for i in range(5):
+        new_list.append(list[i])
+        new_list.append(list[i+5])
+        new_list.append(list[i+10])
+        new_list.append(list[i+15])
+        new_list.append(list[i+20])
+    return new_list
 
 def new_card(request):
+    numbers, id = generate_card()
     context = {
-            'numbers': generate_card()
+        'card_id': id,
+        'numbers': list(numbers)
     }
     request.session['numbers'] = context['numbers']
     return redirect('index')
