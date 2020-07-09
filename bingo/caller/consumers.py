@@ -73,4 +73,16 @@ class BingoConsumer(WebsocketConsumer):
             "bingo", self.channel_name
         )
     def receive(self, text_data):
-        pass
+        # Stick this in a database table?
+        async_to_sync(self.channel_layer.group_send)(
+            "bingo", {
+                'type': 'bingo',
+                'info': text_data
+            }
+        )
+    def bingo(self, event):
+        data=json.loads(event['info'])
+        print(data)
+        self.send(text_data=json.dumps({
+                    'bingo_alert': f"{data['name']} of the {data['team']} team called bingo!"
+                }))

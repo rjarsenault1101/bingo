@@ -53,6 +53,11 @@
         document.querySelector('#callnumber').onclick = function(e) {
             chatSocket.send(JSON.stringify({}));
         };
+		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/')
+		bingoSocket.onmessage = function(e) {
+			const data = JSON.parse(e.data);
+			alert(data.bingo_alert);
+		}
     </script>
 
 	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>

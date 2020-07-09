@@ -21,29 +21,7 @@
             UPEI NSO BINGO!!
         </div>
     </div>
-	<script>
-
-		// get users name and team, stick em in query params here: ---------------------v
-		const cardSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=rj');
-		cardSocket.onmessage = function(e) {
-			// Received a thing? Probably don't need
-		};
-        const numberSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/call/'
-        );
-		numberSocket.onmessage = function(e) {
-            console.log('received message')
-            const data = JSON.parse(e.data);
-			console.log(data.number);
-            document.querySelector('#numbers').value += (data.number + '  ');
-        };
-        numberSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-		
-    </script>
+	{% comment %} Enter name, select team from dropdown {% endcomment %}
 	<div class="container-table100">
 		<div class="row">
 			<div class="col-md-6">
@@ -81,7 +59,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="bingo-button">				
-					<button class="btn btn-secondary">BINGO!</button>
+					<button id="bingo" class="btn btn-secondary">BINGO!</button>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -93,7 +71,37 @@
 	</div>
 	
 
-
+	<script>
+		// get users name and team, stick em in query params here: ---------------------v
+		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=rj');
+		bingoSocket.onmessage = function(e) {
+			// Received a thing? Probably don't need
+		};
+		bingoSocket.onclose = function(e) {
+			console.error('Bingo socket closed unexpectedly');
+		}
+		document.querySelector("#bingo").onclick = function(e) {
+			bingoSocket.send(JSON.stringify({
+				'name': 'RJ',
+				'team': 'green',
+				'cardID': '1234'
+			}))
+		}
+        const numberSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/call/'
+        );
+		numberSocket.onmessage = function(e) {
+            console.log('received message')
+            const data = JSON.parse(e.data);
+			console.log(data.number);
+            document.querySelector('#numbers').value += (data.number + '  ');
+        };
+        numberSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+    </script>
 	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
