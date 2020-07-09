@@ -55,3 +55,22 @@ class CallConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'number': newNumber
         }))
+
+# This one is for when someone calls bingo. Maybe also when they connect? Receive their name/team/cardID?
+class BingoConsumer(WebsocketConsumer):
+    def connect(self):
+        name = self.scope['query_string'].decode("utf-8")
+        print(self.scope['path'])
+        print("query: " + name)
+        async_to_sync(self.channel_layer.group_add)(
+            "bingo", self.channel_name
+        )
+        
+        self.accept()
+    def disconnect(self, close_code):
+        # Leave room group
+        async_to_sync(self.channel_layer.group_discard)(
+            "bingo", self.channel_name
+        )
+    def receive(self, text_data):
+        pass

@@ -36,6 +36,11 @@
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
+		// get users name and team, stick em in query params here: ---------------------v
+		const cardSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=rj');
+		cardSocket.onmessage = function(e) {
+			// Received a thing? Probably don't need
+		};
     </script>
 	<div class="container-table100">
 		<div class="row">
