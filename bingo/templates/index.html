@@ -22,25 +22,27 @@
         </div>
     </div>
 	<script>
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/call/'
-        );
-		chatSocket.onmessage = function(e) {
-            console.log('received message')
-            const data = JSON.parse(e.data);
-			console.log(data.number);
-            document.querySelector('#numbers').value += (data.number + '  ');
-        };
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+
 		// get users name and team, stick em in query params here: ---------------------v
 		const cardSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=rj');
 		cardSocket.onmessage = function(e) {
 			// Received a thing? Probably don't need
 		};
+        const numberSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/call/'
+        );
+		numberSocket.onmessage = function(e) {
+            console.log('received message')
+            const data = JSON.parse(e.data);
+			console.log(data.number);
+            document.querySelector('#numbers').value += (data.number + '  ');
+        };
+        numberSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+		
     </script>
 	<div class="container-table100">
 		<div class="row">
@@ -73,17 +75,19 @@
 			<div class="col-md-6">
 				<p>Called Numbers:</p>
 				<textarea disabled="true" id="numbers"></textarea>
-				<div class="bingo-button">				
-					<button class="btn btn-secondary">BINGO!</button>
-				</div>
-				<div class="new-card-button">
-					<button class="btn btn-secondary" onclick="location.href='{% url 'new' %}'">New Card</button>
-				</div>
+				
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				
+				<div class="bingo-button">				
+					<button class="btn btn-secondary">BINGO!</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="new-card-button">
+					<button class="btn btn-secondary" onclick="location.href='{% url 'new' %}'">New Card</button>
+				</div>
 			</div>
 		</div>
 	</div>
