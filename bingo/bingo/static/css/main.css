@@ -37,7 +37,7 @@ textarea {
 }
 
 .bingo-button {
-  padding-top: 100px;
+  padding: 50px;
   box-sizing: content-box;
   display: flex;
   align-items: center;
@@ -54,14 +54,6 @@ textarea {
 iframe {
 	border: none !important;
 }
-
-div input {
-  text-align: center;
-  color: #000000;
-  width: 100px;
-  height: 100px;
-}
-
 .fixed-header {
 width: 100%;
 position: fixed;        
@@ -69,10 +61,8 @@ background: #8c2004;
 padding: 10px 0;
 color: #fff;
 }
-
-.page-title{
-width: 80%;
-margin: 0 auto; /* Center the DIV horizontally */
+.upei-red {
+  background-color: #8c2004;
 }
 
 
