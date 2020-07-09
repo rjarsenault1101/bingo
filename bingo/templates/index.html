@@ -57,11 +57,7 @@
 							{% if forloop.counter0 > 0 %}</tr>{% endif %}
 							<tr class="cardRow">
 							{% endif %}
-								<td 
-									{% if forloop.counter <= 5 or forloop.counter > 20 %}
-												class="free"
-									{% endif %}
-								>
+								<td class="free">
 									{{ cell }}
 								</td>
 							{% endfor %}

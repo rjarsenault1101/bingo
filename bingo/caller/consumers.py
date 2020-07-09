@@ -9,13 +9,24 @@ from .models import CalledNumber
 
 class CallConsumer(WebsocketConsumer):
     def connect(self):
-        # Send all the current values? 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             "numbercalling", self.channel_name
         )
-
+        
         self.accept()
+        # This stuff probably needs to be another channel
+        # already_called = list(CalledNumber.objects.all().values_list('number', flat=True))
+        # already_called = [str(i) for i in already_called]
+        # already_called = "  ".join(already_called)
+        # async_to_sync(self.channel_layer.group_send)(
+        #     "numbercalling",
+        #     {
+        #         'type': 'caller_number',
+        #         'number': already_called
+        #     }
+        # )
+
 
     def disconnect(self, close_code):
         # Leave room group
