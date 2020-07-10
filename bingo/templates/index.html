@@ -15,12 +15,12 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
 
 </head>
-<body class="bg-primary">
+<body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
-	<div class="container">
-		<div class="row">
+	<div class="container p-b-100">
+		<div class="row align-middle">
 			<form onsubmit="setup()">
 				<div class="input-group">
 					<input type="text" class="form-control" id="name" placeholder="Name (first and last)">
@@ -40,7 +40,7 @@
 	<div class="container p-b-100">
 		
 		<div class="row">
-			<div class="col-xl-6">
+			<div class="col-md-6">
 				<div class="table100">
 					<table>
 						<thead>
@@ -66,21 +66,21 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-xl-6">
+			<div class="col-md-6">
 				<p>Called Numbers:</p>
-				<textarea disabled="true" id="numbers"></textarea>
+				<textarea id="callednumbers" disabled="true">{{ called }}</textarea>
 				
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="bingo-button">				
-					<button id="bingo" class="btn btn-secondary" disabled="true">BINGO!</button>
+					<button id="bingo" class="btn btn-secondary btn-lg" disabled="true">BINGO!</button>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="new-card-button">
-					<button id="newcard" class="btn btn-secondary" disabled="true" onclick="location.href='{% url 'new' %}'">New Card</button>
+					<button id="newcard" class="btn btn-secondary btn-lg" disabled="true" onclick="location.href='{% url 'new' %}'">New Card</button>
 				</div>
 			</div>
 		</div>
@@ -88,32 +88,32 @@
 	
 
 	<script>
-		const bingoSocket;
-		const name;
-		const team;
-		var setup(e) = {
+		function setup(e) {
 			console.log("is this thing on?");
 			document.querySelector('#bingo').removeAttribute("disabled");
 			document.querySelector('#newcard').removeAttribute("disabled");
-			name = document.querySelector("#name").value;
-			team = document.querySelector("#team").value;
+			const name = document.querySelector("#name").value;
+			const team = document.querySelector("#team").value;
 			console.log(name + " " + team);
-			bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=' + name +'&team=' + team + '&card=' + {{card_id}}
-		}
-		// get users name and team, stick em in query params here: ---------------------v
-		bingoSocket.onmessage = function(e) {
-			// Received a thing? Probably don't need
-		};
-		bingoSocket.onclose = function(e) {
-			console.error('Bingo socket closed unexpectedly');
-		}
-		document.querySelector("#bingo").onclick = function(e) {
+			const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=' + name +'&team=' + team + '&card=' + '{{card_id}}');
+			// get users name and team, stick em in query params here: ---------------------v
+			bingoSocket.onmessage = function(e) {
+				// Received a thing? Probably don't need
+			};
+			bingoSocket.onclose = function(e) {
+				console.error('Bingo socket closed unexpectedly');
+			}
+			document.querySelector("#bingo").onclick = function(e) {
 			bingoSocket.send(JSON.stringify({
 				'name': name,
 				'team': team,
-				'card_id': {{card_id}}
+				'card_id': '{{card_id}}'
 			}))
 		}
+		}
+		
+		
+		
         const numberSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -123,7 +123,7 @@
             console.log('received message')
             const data = JSON.parse(e.data);
 			console.log(data.number);
-            document.querySelector('#numbers').value += (data.number + '  ');
+            document.querySelector('#callednumbers').value += (data.number + '  ');
         };
         numberSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');

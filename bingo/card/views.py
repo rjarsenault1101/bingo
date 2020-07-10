@@ -1,21 +1,29 @@
 from django.shortcuts import render, redirect
 import random
 from .models import Card
+from caller.models import CalledNumber
 
 # Create your views here.
 def index(request):
+    called = get_called()
     if request.session.get('numbers', None) != None:
         context = {
-            'numbers': request.session['numbers']
+            'numbers': request.session['numbers'],
+            'called': called
         }
     else:
         numbers = generate_card()[0]
         context = {
             'card_id': id,
-            'numbers': list(numbers)
+            'numbers': list(numbers),
+            'called': called
         }
     request.session['numbers'] = context['numbers']
     return render(request, 'index.html', context)
+
+def get_called():
+    called = list(CalledNumber.objects.all().values_list('number', flat=True))
+    return "  ".join([str(i) for i in called]) + "  "
 
 def generate_card(): 
     b = random.sample(range(1,16), 5)
@@ -42,9 +50,11 @@ def transpose(list):
 
 def new_card(request):
     numbers, id = generate_card()
+    called = get_called()
     context = {
         'card_id': id,
-        'numbers': list(numbers)
+        'numbers': list(numbers),
+        'called': called
     }
     request.session['numbers'] = context['numbers']
     return redirect('index')
