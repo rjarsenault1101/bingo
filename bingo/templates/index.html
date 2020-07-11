@@ -76,6 +76,13 @@
 				'card_id': '{{ card_id }}'
 			}))
 		}
+		bingoSocket.onmessage = function(e) {
+			const data = JSON.parse(e.data);
+			switch(data.type){
+				case "bingo":
+					document.getElementById('bingo').disabled="true"
+			}
+		}
 		// Make the function wait until the connection is made...
 		function waitForSocketConnection(socket, callback){
 			setTimeout(
