@@ -41,7 +41,7 @@
         );
 		chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#numbers').value += (data.number + '  ');
+            document.querySelector('#callednumbers').value += (data.number + '  ');
         };
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
