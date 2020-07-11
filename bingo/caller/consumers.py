@@ -36,7 +36,8 @@ class CallConsumer(WebsocketConsumer):
 
     # This gets called by the caller's new number button
     def receive(self, text_data):
-        callable_items = Callable.objects.values('value').exclude(value__in=CalledNumber.objects.all().values_list('number', flat=True)).values_list('value', flat=True)
+        called = CalledNumber.objects.all().values_list('number', flat=True)
+        callable_items = Callable.objects.values('value').exclude(value__in=called).values_list('value', flat=True)
         callable_items = list(callable_items)
         new_number = CalledNumber(number=int(random.choice(callable_items)))
         new_number.save()
