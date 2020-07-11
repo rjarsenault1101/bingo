@@ -42,10 +42,7 @@ INSTALLED_APPS = [
     'init',
     'bingoAuth',
 ]
-AUTH_USER_MODEL='bingoAuth.User'
-AUTHENTICAION_BACKENDS = [
-    'bingoAuth.backend.BingoBackend'
-]
+
 ASGI_APPLICATION='bingo.routing.application'
 CHANNEL_LAYERS = {
     'default': {

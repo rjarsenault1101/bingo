@@ -2,7 +2,9 @@ from django.contrib.auth.backends import BaseBackend
 from .models import User
 
 class BingoBackend(BaseBackend):
-    def authenticate(self, request, username=None, team=None):
+
+    def authenticate(self, request, username=None, team=None, password=None):
+        print("custom backed")
         try:
             user = User.objects.get(name=username, team=team)
             return user

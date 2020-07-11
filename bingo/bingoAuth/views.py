@@ -1,15 +1,22 @@
 from django.shortcuts import render, redirect
 import json
-from .models import User
+from django.contrib import auth
+from django.contrib.auth.models import User
+
 # Create your views here.
 def login(request):
-    if request.method == 'GET': 
-        if request.session.get('name', None) == None:
-            return render(request, 'registration/login.html')
+    if request.method == 'POST': 
+        username = request.POST['name']
+        team = request.POST['team']
+        user = None
+        try:
+            user = User.objects.get(username=username, email=team)
+        except User.DoesNotExist:
+            pass
+
+        if user is None:
+            user = User(username=username, email=team)
+            user.save()
+        auth.login(request, user)
         return redirect('index')
-    else: 
-        request.session['name'] = request.POST['name']
-        request.session['team'] = request.POST['team']
-        user = User(name=request.POST['name'], team=request.POST['team'])
-        user.save()
-        return redirect('index')
+    return render(request, 'registration/login.html')

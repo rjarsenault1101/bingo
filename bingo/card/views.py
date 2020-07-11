@@ -1,24 +1,30 @@
 from django.shortcuts import render, redirect
 import random
-from .models import Card
+from .models import Card, CardUser
 from caller.models import CalledNumber
-
+from django.contrib.auth.models import User
 # Create your views here.
 def index(request):
+    user = User.objects.get(pk=request.user.id)
+    print(user.username + " " + user.email)
     called = get_called()
-    if request.session.get('numbers', None) != None:
-        context = {
-            'numbers': request.session['numbers'],
-            'called': called
-        }
+    if CardUser.objects.filter(user_id=user.id).exists():
+        # User has a card. send context containing card's numbers transposed
+        card_user = CardUser.objects.get(user_id=user.id)
+        card = Card.objects.get(id=card_user.card_id)
+        numbers = card.b + card.i + card.n + card.g + card.o
+        numbers = transpose(numbers)
     else:
-        numbers, id = generate_card()
-        context = {
-            'card_id': id,
-            'numbers': list(numbers),
-            'called': called
-        }
-    request.session['numbers'] = context['numbers']
+        # No card exists for this user. Generate one
+        numbers, card = generate_card()
+        card_user = CardUser(card_id=card.id, user_id=user.id)
+        card_user.save()
+    context = {
+        'called': called,
+        'card_id': card.id,
+        'numbers': numbers
+    }
+
     return render(request, 'index.html', context)
 
 def get_called():
@@ -36,7 +42,7 @@ def generate_card():
     card = Card(b=b, i=i, n=n, g=g, o=o)
     card.save()
     numbers = transpose(numbers)
-    return [numbers, card.id]
+    return [numbers, card]
 
 def transpose(list):
     new_list = []

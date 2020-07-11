@@ -60,8 +60,8 @@ class CallConsumer(WebsocketConsumer):
 class BingoConsumer(WebsocketConsumer):
     def connect(self):
         name = self.scope['query_string'].decode("utf-8")
-        print(self.scope['path'])
-        print("query: " + name)
+        # print(self.scope['path'])
+        # print("query: " + name)
         async_to_sync(self.channel_layer.group_add)(
             "bingo", self.channel_name
         )
