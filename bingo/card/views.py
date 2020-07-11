@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 # Create your views here.
 def index(request):
     user = User.objects.get(pk=request.user.id)
-    print(user.username + " " + user.email)
     called = get_called()
     if CardUser.objects.filter(user_id=user.id).exists():
         # User has a card. send context containing card's numbers transposed

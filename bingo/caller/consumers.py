@@ -86,7 +86,6 @@ class BingoConsumer(WebsocketConsumer):
                 }
             )
         if text_data['type'] == 'login':
-            print('login type!')
             async_to_sync(self.channel_layer.group_send)(
                 "login", {
                     'type': 'login',
@@ -142,12 +141,3 @@ class LoginConsumer(WebsocketConsumer):
                 'card': data['card']
             }
         )
-
-    def parse_query(self, query):
-        query = query.split('&')
-        toreturn = []
-        print(len(query))
-        print(query)
-        for element in query:
-            toreturn.append(element.split('=')[1])
-        return toreturn
