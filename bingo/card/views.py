@@ -22,7 +22,8 @@ def index(request):
     context = {
         'called': called,
         'card_id': card.id,
-        'numbers': numbers
+        'numbers': numbers, 
+        'user': user
     }
 
     return render(request, 'index.html', context)
@@ -53,14 +54,3 @@ def transpose(list):
         new_list.append(list[i+15])
         new_list.append(list[i+20])
     return new_list
-
-def new_card(request):
-    numbers, id = generate_card()
-    called = get_called()
-    context = {
-        'card_id': id,
-        'numbers': list(numbers),
-        'called': called
-    }
-    request.session['numbers'] = context['numbers']
-    return redirect('index')

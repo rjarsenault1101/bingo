@@ -15,17 +15,6 @@ class CallConsumer(WebsocketConsumer):
         )
         
         self.accept()
-        # This stuff probably needs to be another channel
-        # already_called = list(CalledNumber.objects.all().values_list('number', flat=True))
-        # already_called = [str(i) for i in already_called]
-        # already_called = "  ".join(already_called)
-        # async_to_sync(self.channel_layer.group_send)(
-        #     "numbercalling",
-        #     {
-        #         'type': 'caller_number',
-        #         'number': already_called
-        #     }
-        # )
 
 
     def disconnect(self, close_code):
@@ -59,31 +48,106 @@ class CallConsumer(WebsocketConsumer):
 
 # This one is for when someone calls bingo. Maybe also when they connect? Receive their name/team/cardID?
 class BingoConsumer(WebsocketConsumer):
+    
     def connect(self):
-        name = self.scope['query_string'].decode("utf-8")
-        # print(self.scope['path'])
-        # print("query: " + name)
         async_to_sync(self.channel_layer.group_add)(
             "bingo", self.channel_name
         )
-        
+        async_to_sync(self.channel_layer.group_add)(
+            "login", self.channel_name
+        )
         self.accept()
+
     def disconnect(self, close_code):
-        # Leave room group
+        # logout - remove name, team, card
+        async_to_sync(self.channel_layer.group_send)(
+            "login", {
+                'type': 'logout'
+                # 'name': text_data['name'],
+                # 'team': text_data['team'],
+                # 'card': text_data['card_id']
+            }
+        )
         async_to_sync(self.channel_layer.group_discard)(
             "bingo", self.channel_name
         )
+        async_to_sync(self.channel_layer.group_discard)(
+            "login", self.channel_name
+        )
     def receive(self, text_data):
-        # Stick this in a database table?
+        text_data = json.loads(text_data)
+        if text_data['type'] == 'bingo':
+            async_to_sync(self.channel_layer.group_send)(
+                "bingo", {
+                    'type': 'bingo',
+                    'name': text_data['name'],
+                    'team': text_data['team'],
+                    'card': text_data['card_id']
+                }
+            )
+        if text_data['type'] == 'login':
+            print('login type!')
+            async_to_sync(self.channel_layer.group_send)(
+                "login", {
+                    'type': 'login',
+                    'name': text_data['name'],
+                    'team': text_data['team'],
+                    'card': text_data['card_id']
+                }
+            )
+    def bingo(self, event):
+        self.send(text_data=json.dumps({
+                    'type': 'bingo',
+                    'bingo_alert': f"{event['name']} of the {event['team']} team called bingo!"
+                }))
+    def login(self, event):
+        self.send(text_data=json.dumps({
+            'type': 'login',
+            'name': event['name'],
+            'team': event['team'],
+            'card': event['card']
+        }))
+    def logout(self, event):
+        self.send(text_data=json.dumps({
+            'type': 'logout'
+        }))
+class LoginConsumer(WebsocketConsumer):
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)(
+            "login", self.channel_name
+        )
+        # Login - send name, team, card
+        self.accept()
+
+    def login(self, event):
+        self.send(text_data=json.dumps({
+            'name': event['name'],
+            'team': event['team'],
+            'card': event['card']
+        }))
+        
+    def disconnect(self, close_code):
+        # logout - remove name, team, card
+        async_to_sync(self.channel_layer.group_discard)(
+            "login", self.channel_name
+        )
+    def receive(self, text_data):
+        data = json.dumps(text_data)
+
         async_to_sync(self.channel_layer.group_send)(
-            "bingo", {
-                'type': 'bingo',
-                'info': text_data
+            "login", {
+                'type': 'login',
+                'name': data['name'],
+                'team': data['team'],
+                'card': data['card']
             }
         )
-    def bingo(self, event):
-        data=json.loads(event['info'])
-        print(data)
-        self.send(text_data=json.dumps({
-                    'bingo_alert': f"{data['name']} of the {data['team']} team called bingo!"
-                }))
+
+    def parse_query(self, query):
+        query = query.split('&')
+        toreturn = []
+        print(len(query))
+        print(query)
+        for element in query:
+            toreturn.append(element.split('=')[1])
+        return toreturn

@@ -30,30 +30,54 @@
 			</div> 
 		</div>
 		<div class="row">
-			
+			<div class="col-md-12">
+				<table class="table" id="active-users">
+					<thead class="thead-dark">
+						<th>Name</th>
+						<th>Team</th>
+						<th>Card</th>
+					</thead>
+				</table>
+			</div>
 		</div>
 	</div>
 	<script>
-        const chatSocket = new WebSocket(
+        const callerSocket = new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/call/'
         );
-		chatSocket.onmessage = function(e) {
+		callerSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#callednumbers').value += (data.number + '  ');
         };
-        chatSocket.onclose = function(e) {
+        callerSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
         document.querySelector('#callnumber').onclick = function(e) {
-            chatSocket.send(JSON.stringify({}));
+            callerSocket.send(JSON.stringify({}));
         };
 		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/')
 		bingoSocket.onmessage = function(e) {
 			const data = JSON.parse(e.data);
-			alert(data.bingo_alert);
+			console.log(data.type)
+			switch(data.type) {
+				case "bingo": 
+					alert(data.bingo_alert);
+					break;
+				case "login": 
+					// Add to table that doesn't exist yet
+					var users = document.getElementById('active-users');
+					var row = users.insertRow();
+					row.insertCell().innerHTML=data.name;
+					row.insertCell().innerHTML=data.team;
+					row.insertCell().innerHTML=data.card;
+
+				case "logout": 
+					// Remove from table that doesn't exist yet
+
+			}
 		}
     </script>
 
