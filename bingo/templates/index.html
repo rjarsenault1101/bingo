@@ -5,7 +5,7 @@
 	<title>NSO Bingo</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+	<link rel="icon" type="image/png" href="{% static 'icons/favicon.ico' %}"/>
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
@@ -19,26 +19,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
-	<div class="container p-b-100">
-		<div class="row align-middle">
-			<form onsubmit="setup()">
-				<div class="input-group">
-					<input type="text" class="form-control" id="name" placeholder="Name (first and last)">
-					<select class="form-control" id="team">
-						<option>Red</option>
-						<option>Orange</option>
-						<option>Green</option>
-						<option>Blue</option>
-						<option>Purple</option>
-					</select>
-					<input type="submit" class="btn btn-secondary" id="enterName"/>
-				</div>
-			</form>
-		</div>
-	</div>
-	{% comment %} Enter name, select team from dropdown {% endcomment %}
-	<div class="container p-b-100">
-		
+	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
 				<div class="table100">
@@ -88,32 +69,22 @@
 	
 
 	<script>
-		function setup(e) {
-			console.log("is this thing on?");
-			document.querySelector('#bingo').removeAttribute("disabled");
-			document.querySelector('#newcard').removeAttribute("disabled");
-			const name = document.querySelector("#name").value;
-			const team = document.querySelector("#team").value;
-			console.log(name + " " + team);
-			const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name=' + name +'&team=' + team + '&card=' + '{{card_id}}');
-			// get users name and team, stick em in query params here: ---------------------v
-			bingoSocket.onmessage = function(e) {
-				// Received a thing? Probably don't need
-			};
-			bingoSocket.onclose = function(e) {
-				console.error('Bingo socket closed unexpectedly');
-			}
-			document.querySelector("#bingo").onclick = function(e) {
+		
+		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/?name={{ name }}&team={{ team }}&card={{ card }}');
+		// get users name and team, stick em in query params here: ---------------------v
+		bingoSocket.onmessage = function(e) {
+			// Received a thing? Probably don't need
+		};
+		bingoSocket.onclose = function(e) {
+			console.error('Bingo socket closed unexpectedly');
+		}
+		document.querySelector("#bingo").onclick = function(e) {
 			bingoSocket.send(JSON.stringify({
 				'name': name,
 				'team': team,
-				'card_id': '{{card_id}}'
+				'card_id': card
 			}))
 		}
-		}
-		
-		
-		
         const numberSocket = new WebSocket(
             'ws://'
             + window.location.host

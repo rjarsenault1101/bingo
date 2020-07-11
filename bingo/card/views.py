@@ -12,7 +12,7 @@ def index(request):
             'called': called
         }
     else:
-        numbers = generate_card()[0]
+        numbers, id = generate_card()
         context = {
             'card_id': id,
             'numbers': list(numbers),

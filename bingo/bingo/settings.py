@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,6 +40,11 @@ INSTALLED_APPS = [
     'channels',
     'caller',
     'init',
+    'bingoAuth',
+]
+AUTH_USER_MODEL='bingoAuth.User'
+AUTHENTICAION_BACKENDS = [
+    'bingoAuth.backend.BingoBackend'
 ]
 ASGI_APPLICATION='bingo.routing.application'
 CHANNEL_LAYERS = {
@@ -89,8 +93,12 @@ ASGI_APPLICATION = 'bingo.routing.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bingo',
+        'USER': 'bingo',
+        'PASSWORD': 'potato',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
