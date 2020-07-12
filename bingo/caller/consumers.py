@@ -75,8 +75,6 @@ class BingoConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         user = self.scope['user']
         card_user = CardUser.objects.get(user_id=user.id)
-        print(user.email)
-        print(card_user.card_id)
         # logout - remove name, team, card
         async_to_sync(self.channel_layer.group_send)(
             "login", {
@@ -115,7 +113,8 @@ class BingoConsumer(WebsocketConsumer):
     def bingo(self, event):
         self.send(text_data=json.dumps({
                     'type': 'bingo',
-                    'bingo_alert': f"{event['name']} of the {event['team']} team called bingo!"
+                    'bingo_alert': f"{event['name']} of the {event['team']} team called bingo!",
+                    'small_alert': f"Someone from the {event['team']} team has just called bingo!"
                 }))
     def login(self, event):
         self.send(text_data=json.dumps({
