@@ -9,9 +9,6 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
 
 </head>
@@ -19,6 +16,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
+	<div id="message" class="container mt-5"></div>
 	<div class="container-fluid">
 		<div class="row p-5">
 			<div class="col-md-6 d-flex flex-column flex-row justify-content-center">
@@ -33,12 +31,13 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<table class="table table-bordered table-dark" id="active-users">
+				<table class="table table-bordered table-dark table-striped" id="active-users">
 					<thead class="thead-dark">
 						<th>Name</th>
 						<th>Team</th>
 						<th>Card</th>
 					</thead>
+					<tbody></tbody>
 				</table>
 			</div>
 		</div>
@@ -79,20 +78,20 @@
 			console.log(data.type)
 			switch(data.type) {
 				case "bingo": 
-					alert(data.bingo_alert);
+					$("#message").append(
+						'<div class="alert alert-danger alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><strong>' + data.bingo_alert + '</strong></div>'
+					)
 					break;
 				case "login": 
-					// Add to table that doesn't exist yet
-					var users = document.getElementById('active-users');
-					var row = users.insertRow();
-					row.id=data.name
-					row.insertCell().innerHTML=data.name;
-					row.insertCell().innerHTML=data.team;
-					row.insertCell().innerHTML=data.card;
+					if( $("#" + data.name + data.team).length) {
+						$("#" + data.name + data.team).addClass("bg-primary")
+					} else {
+						var row = "<tr class=\"bg-primary\" id=\"" + data.name + data.team + "\"><td>" + data.name + "</td><td>" + data.team + "</td><td>" + data.card + "</td></tr>"
+						$('#active-users tbody').append(row)
+					}
 					break;
 				case "logout": 
-					var row = document.getElementById(data.name);
-					row.parentNode.removeChild(row);
+					$("#"+ data.name + data.team).removeClass("bg-primary")
 					break
 			}
 		}
@@ -101,8 +100,5 @@
 	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
-	<script src="{% static 'vendor/select2/select2.min.js'%}"></script>
-	<script src="{% static 'js/main.js'%}"></script>
-
 </body>
 </html>
