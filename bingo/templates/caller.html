@@ -70,12 +70,15 @@
 					// Add to table that doesn't exist yet
 					var users = document.getElementById('active-users');
 					var row = users.insertRow();
+					row.id=data.name
 					row.insertCell().innerHTML=data.name;
 					row.insertCell().innerHTML=data.team;
 					row.insertCell().innerHTML=data.card;
-
+					break;
 				case "logout": 
-					// Remove from table that doesn't exist yet
+					var row = document.getElementById(data.name);
+					row.parentNode.removeChild(row);
+					break
 
 			}
 		}

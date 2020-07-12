@@ -1,9 +1,8 @@
 import json, random
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from channels.db import database_sync_to_async
 from asgiref.sync import async_to_sync, sync_to_async
-
+from card.models import CardUser
 from init.models import Callable
 from .models import CalledNumber
 
@@ -59,13 +58,17 @@ class BingoConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
+        user = self.scope['user']
+        card_user = CardUser.objects.get(user_id=user.id)
+        print(user.email)
+        print(card_user.card_id)
         # logout - remove name, team, card
         async_to_sync(self.channel_layer.group_send)(
             "login", {
-                'type': 'logout'
-                # 'name': text_data['name'],
-                # 'team': text_data['team'],
-                # 'card': text_data['card_id']
+                'type': 'logout',
+                'name': user.username,
+                'team': user.email,
+                'card': card_user.card_id
             }
         )
         async_to_sync(self.channel_layer.group_discard)(
@@ -108,36 +111,8 @@ class BingoConsumer(WebsocketConsumer):
         }))
     def logout(self, event):
         self.send(text_data=json.dumps({
-            'type': 'logout'
-        }))
-class LoginConsumer(WebsocketConsumer):
-    def connect(self):
-        async_to_sync(self.channel_layer.group_add)(
-            "login", self.channel_name
-        )
-        # Login - send name, team, card
-        self.accept()
-
-    def login(self, event):
-        self.send(text_data=json.dumps({
+            'type': 'logout',
             'name': event['name'],
             'team': event['team'],
             'card': event['card']
         }))
-        
-    def disconnect(self, close_code):
-        # logout - remove name, team, card
-        async_to_sync(self.channel_layer.group_discard)(
-            "login", self.channel_name
-        )
-    def receive(self, text_data):
-        data = json.dumps(text_data)
-
-        async_to_sync(self.channel_layer.group_send)(
-            "login", {
-                'type': 'login',
-                'name': data['name'],
-                'team': data['team'],
-                'card': data['card']
-            }
-        )
