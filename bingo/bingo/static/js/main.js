@@ -1,6 +1,6 @@
 
 (function ($) {
-	$("td").click(function(e) {   
+	$("#cell").click(function(e) {   
 		e.preventDefault();
 		var color = $(this).css("background-color");
 		console.log(color);

@@ -1,9 +1,3 @@
-
-
-/*//////////////////////////////////////////////////////////////////
-[ FONT ]*/
-
-
 @font-face {
   font-family: Montserrat-Regular;
   src: url('../fonts/montserrat/Montserrat-Regular.ttf'); 
@@ -14,26 +8,23 @@
   src: url('../fonts/montserrat/Montserrat-Medium.ttf'); 
 }
 
-/*//////////////////////////////////////////////////////////////////
-[ RESTYLE TAG ]*/
-
 body, html {
   height: 100%;
   background-color: #808080 !important;
 	font-family: sans-serif;
 }
 
-#callednumbers {
+.callednumbers {
   display: block;
   outline: none;
   resize: none;
   height: 100px;
-  width: 500px;
   scroll-behavior: smooth;
 }
-
+.callednumbers.user {
+  width: 500px;
+}
 .bingo-button {
-  padding: 50px;
   box-sizing: content-box;
   display: flex;
   align-items: center;
@@ -52,46 +43,20 @@ body, html {
   background-color: #8c2004 !important;
 }
 
-
-
-/*//////////////////////////////////////////////////////////////////
-[ Table ]*/
-
-.limiter {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.container-table100 {
-  width: 100%;
-  min-height: 100vh;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 33px 30px;
-}
-/*//////////////////////////////////////////////////////////////////
-[ Table ]*/
-table {
+.card-table {
   border: 3px solid #fbb040;
   width: 100%;
   background-color: #fff;
 }
 
-th, td {
+.card-element {
   border: 3px solid #fbb040;
   font-weight: unset;
   padding-right: 10px;
   width: 130px;
   padding-left: 25px;
 }
-td {
+.cell {
   cursor: pointer;
   background-color: #ffffff;
 }
@@ -100,24 +65,6 @@ td {
   padding-top: 24px;
   padding-bottom: 20px;
   text-align: center;
-}
-
-.cardRow td {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  text-align: center;
-  background-color: #5c8727;
-  color: #fff !important;
-}
-
-.table100 td {
-  font-family: Montserrat-Regular;
-  font-size: 24px;
-  color: #808080;
-  line-height: 1.4;
-}
-
-.table100 th {
   font-family: Montserrat-Medium;
   font-size: 24px;
   color: #fff;
@@ -127,3 +74,11 @@ td {
   background-color: #333333;
 }
 
+.cardRow td {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  text-align: center;
+  font-size: 24px;
+  background-color: #5c8727;
+  color: #fff !important;
+}

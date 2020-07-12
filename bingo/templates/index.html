@@ -20,17 +20,17 @@
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
 	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
+		<div class="row p-5">
+			<div class="col-md-6 d-flex flex-column">
 				<div class="table100">
-					<table>
+					<table class="table card-table">
 						<thead>
 							<tr class="cardRow head">
-								<th>U</th>
-								<th>P</th>
-								<th>🐱‍👤</th>
-								<th>E</th>
-								<th>I</th>
+								<th class="card-element">U</th>
+								<th class="card-element">P</th>
+								<th class="card-element">🐱‍👤</th>
+								<th class="card-element">E</th>
+								<th class="card-element">I</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -39,7 +39,7 @@
 							{% if forloop.counter0 > 0 %}</tr>{% endif %}
 							<tr class="cardRow">
 							{% endif %}
-								<td class="free">
+								<td class="card-element cell">
 									{{ cell }}
 								</td>
 							{% endfor %}
@@ -47,16 +47,16 @@
 					</table>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 p-5	">
 				<p>Called Numbers:</p>
-				<textarea id="callednumbers" disabled="true">{{ called }}</textarea>
+				<textarea id="callednumbers" class="callednumbers user" disabled="true">{{ called }}</textarea>
 				
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="bingo-button">				
-					<button id="bingo" class="btn btn-secondary btn-lg" >BINGO!</button>
+					<button id="bingo" class="btn btn-success btn-block" >BINGO!</button>
 				</div>
 			</div>
 		</div>

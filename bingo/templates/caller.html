@@ -19,19 +19,21 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
-	<div class="container p-b-100">
-		<div class="row">
-			<div class="col-md-6">
+	<div class="container-fluid">
+		<div class="row p-5">
+			<div class="col-md-6 d-flex flex-column flex-row justify-content-center">
 				{% comment %} maybe make a list of the values available? And then highlight or cross out ones that get called? {% endcomment %}
-				<textarea id="callednumbers" disabled="true">{{ called }}</textarea>
-			</div>
-			<div class="col-md-6">
-				<button id="callnumber" class="btn bin-secondary">Call number </button>
+				<textarea id="callednumbers" class="callednumbers" disabled="true">{{ called }}</textarea>
+				<button id="callnumber" class="btn btn-block">Call Number</button>
 			</div> 
+			<div class="col-md-6">
+				<button type="button" class="btn btn-lg btn-success btn-block">Valid Bingo</button> 
+				<button type="button" class="btn btn-danger btn-lg btn-block">Reset Game</button>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<table class="table" id="active-users">
+				<table class="table table-bordered table-dark" id="active-users">
 					<thead class="thead-dark">
 						<th>Name</th>
 						<th>Team</th>
