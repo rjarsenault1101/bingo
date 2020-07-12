@@ -24,24 +24,39 @@ class CallConsumer(WebsocketConsumer):
 
     # This gets called by the caller's new number button
     def receive(self, text_data):
-        called = CalledNumber.objects.all().values_list('number', flat=True)
-        callable_items = Callable.objects.values('value').exclude(value__in=called).values_list('value', flat=True)
-        callable_items = list(callable_items)
-        new_number = CalledNumber(number=int(random.choice(callable_items)))
-        new_number.save()
-        async_to_sync(self.channel_layer.group_send)(
-            "numbercalling",
-            {
-                'type': 'caller_number',
-                'number': new_number.number
-            }
-        )
+        data = json.loads(text_data)
+        if data['type'] == 'call':        
+            called = CalledNumber.objects.all().values_list('number', flat=True)
+            callable_items = Callable.objects.values('value').exclude(value__in=called).values_list('value', flat=True)
+            callable_items = list(callable_items)
+            new_number = CalledNumber(number=int(random.choice(callable_items)))
+            new_number.save()
+            async_to_sync(self.channel_layer.group_send)(
+                "numbercalling",
+                {
+                    'type': 'call_number',
+                    'number': new_number.number
+                }
+            )
+        if data['type'] == 'reset': 
+            CalledNumber.objects.all().delete()
+            async_to_sync(self.channel_layer.group_send)(
+                "numbercalling",
+                {
+                    'type': 'reset'
+                }
+            )
+    def reset(self, event):
+        self.send(text_data=json.dumps({
+            'type': 'reset'
+        }))
 
     # Push new number to everyone
-    def caller_number(self, event):
+    def call_number(self, event):
         newNumber = event['number']
         # Send message to WebSocket
         self.send(text_data=json.dumps({
+            'type': 'call_number',
             'number': newNumber
         }))
 

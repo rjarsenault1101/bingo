@@ -23,7 +23,7 @@
 		<div class="row p-5">
 			<div class="col-6 d-flex justify-content-center">
 				<div class="table100">
-					<table class="table card-table">
+					<table class="table card-table" id="card">
 						<thead>
 							<tr class="cardRow head">
 								<th class="card-element">U</th>
@@ -114,14 +114,28 @@
             + '/ws/call/'
         );
 		numberSocket.onmessage = function(e) {
-            console.log('received message')
             const data = JSON.parse(e.data);
-			console.log(data.number);
-            document.querySelector('#callednumbers').value += (data.number + '  ');
+			switch(data.type) {
+				case "call_number":
+					document.querySelector('#callednumbers').value += (data.number + '  ');
+					break;
+				case "reset": 
+					document.querySelector('#callednumbers').value = '';
+					resetTable();
+					break;
+
+			}
         };
         numberSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
+		function resetTable() {
+			$('#card tr').each(function(){
+				$(this).find('td').each(function(){
+			    	$(this).css("background-color", "#5c8727");
+				})
+			})
+		}
     </script>
 	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>

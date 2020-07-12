@@ -28,7 +28,7 @@
 			</div> 
 			<div class="col-md-6">
 				<button type="button" class="btn btn-lg btn-success btn-block">Valid Bingo</button> 
-				<button type="button" class="btn btn-danger btn-lg btn-block">Reset Game</button>
+				<button id="resetnumbers" type="button" class="btn btn-danger btn-lg btn-block">Reset Game</button>
 			</div>
 		</div>
 		<div class="row">
@@ -51,15 +51,28 @@
         );
 		callerSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#callednumbers').value += (data.number + '  ');
+			switch(data.type) {
+				case "call_number": 
+				    document.querySelector('#callednumbers').value += (data.number + '  ');
+					break;
+				case "reset": 
+					document.querySelector('#callednumbers').value = '';
+			}
         };
         callerSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
         document.querySelector('#callnumber').onclick = function(e) {
-            callerSocket.send(JSON.stringify({}));
+            callerSocket.send(JSON.stringify({
+				"type": "call"
+			}));
         };
+		document.querySelector('#resetnumbers').onclick = function(e) {
+			callerSocket.send(JSON.stringify({
+				"type": "reset"
+			}))
+		}
 		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/')
 		bingoSocket.onmessage = function(e) {
 			const data = JSON.parse(e.data);
@@ -81,7 +94,6 @@
 					var row = document.getElementById(data.name);
 					row.parentNode.removeChild(row);
 					break
-
 			}
 		}
     </script>
