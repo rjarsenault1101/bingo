@@ -1,17 +1,18 @@
 @font-face {
   font-family: Montserrat-Regular;
-  src: url('../fonts/montserrat/Montserrat-Regular.ttf'); 
+  src: url("../fonts/montserrat/Montserrat-Regular.ttf");
 }
 
 @font-face {
   font-family: Montserrat-Medium;
-  src: url('../fonts/montserrat/Montserrat-Medium.ttf'); 
+  src: url("../fonts/montserrat/Montserrat-Medium.ttf");
 }
 
-body, html {
+body,
+html {
   height: 100%;
   background-color: #808080 !important;
-	font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 .callednumbers {
@@ -45,8 +46,6 @@ body, html {
 
 .card-table {
   border: 3px solid #fbb040;
-  width: 100%;
-  background-color: #fff;
 }
 
 .card-element {

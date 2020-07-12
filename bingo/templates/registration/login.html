@@ -11,7 +11,6 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
 
 </head>
@@ -20,22 +19,29 @@
 	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
 	</nav>
 	{% block content %}
-	<div class="container p-b-100">
-		<div class="row align-middle">
-			<form onsubmit="{% url 'index' %}" method="POST">
-				{% csrf_token %}
-				<div class="input-group">
-					<input type="text" class="form-control" name="name" placeholder="Name (first and last)">
-					<select class="form-control" name="team">
-						<option>Red</option>
-						<option>Orange</option>
-						<option>Green</option>
-						<option>Blue</option>
-						<option>Purple</option>
-					</select>
-					<input type="submit" class="btn btn-secondary" id="enterName"/>
-				</div>
-			</form>
+	<div class="container">
+		<div class="row d-flex justify-content-center">
+				<form onsubmit="{% url 'index' %}" method="POST" class="text-center">
+					{% csrf_token %}
+					<div class="form-group p-5">
+						<p class="h4 mb-4">Enter your Name and Team<p>
+						<div class="input-group">
+							<input type="text" class="form-control mb-4" name="name" placeholder="Name (first and last)">
+						</div>
+						<div class="input-group">
+							<select class="form-control mb-4" name="team">
+								<option disabled selected>Choose Team</option>
+								<option>Red</option>
+								<option>Orange</option>
+								<option>Green</option>
+								<option>Blue</option>
+								<option>Purple</option>
+							</select>
+						</div>
+						<input type="submit" class="btn btn-secondary btn-block" id="enterName"/>
+					</div>
+				</form>
+			
 		</div>
 	</div>
 	{% endblock %}

@@ -37,8 +37,8 @@ def generate_card():
     n = random.sample(range(31,46), 5)
     g = random.sample(range(46,61), 5)
     o = random.sample(range(61,76), 5)
+    n[2]="FREE"
     numbers = b + i + n + g + o 
-    numbers[12]="FREE"
     card = Card(b=b, i=i, n=n, g=g, o=o)
     card.save()
     numbers = transpose(numbers)
