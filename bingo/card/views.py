@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
-import random
+from django.shortcuts import render, redirect, get_object_or_404
+import random, json
+from django.http import JsonResponse
 from .models import Card, CardUser
 from caller.models import CalledNumber
 from django.contrib.auth.models import User
@@ -26,6 +27,17 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
+def card(request, card_id):
+    card = get_object_or_404(Card, pk=card_id)
+    numbers = card.b + card.i + card.n + card.g + card.o
+    numbers = transpose(numbers)
+    called = list(CalledNumber.objects.all().values_list('number', flat=True))
+    values = json.dumps({
+        'numbers': numbers,
+        'called': called
+    })
+    return JsonResponse(values, safe=False)
 
 def get_called():
     called = list(CalledNumber.objects.all().values_list('number', flat=True))

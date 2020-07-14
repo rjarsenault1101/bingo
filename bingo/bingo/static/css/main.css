@@ -48,6 +48,9 @@ html {
   border: 3px solid #fbb040;
 }
 
+.card-clicked {
+  background-color: #aaaa00 !important;
+}
 .card-element {
   border: 3px solid #fbb040;
   font-weight: unset;

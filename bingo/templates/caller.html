@@ -37,12 +37,70 @@
 						<th>Team</th>
 						<th>Card</th>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+						{% for user in users %}
+							<tr id="{{user.user.username}}{{user.user.email}}">
+								<td>{{ user.user.username }}</td>
+								<td>{{ user.user.email }}</td>
+								{% comment %} We can also access user.card.(b|i|n|g|o) I think {% endcomment %}
+								{% comment %} data-toggle="collapse" data-target="#cardcollapse" {% endcomment %}
+								<td class="popover-test" style="cursor:pointer" onclick="toggleCollapse()">{{ user.card_id }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
+	<div class="collapse col-6 align-center offset-3" id="cardcollapse">
+      <table id='user-card' class="table card-table table-bordered col-6 align-center offset-3">
+	  	<thead>
+		  	<tr class="cardRow head">
+				<th>b</th>
+				<th>i</th>  
+				<th>n</th>
+				<th>g</th>
+				<th>o</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	  </table>
+    </div>
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 	<script>
+		function toggleCollapse() {
+			//$('#cardcollapse').collapse('hide');
+			$('#user-card tbody').empty()
+			var id = $(event.target).text() // Button that triggered the modaljson
+			console.log(id)
+			$.ajax({
+				url: "http://" + window.location.host + "/" + id,
+				contentType: "application/json",
+				dataType: 'json',
+				success: function(result){
+					var data = JSON.parse(result);
+					console.log(data)
+					console.log(data.called)
+					console.log(data.numbers)
+					// append rows to table body
+					for(var i = 0; i<data.numbers.length; i+=5){ 
+						var row = "<tr class=\"cardRow\">";
+						for(var j = i; j<i+5; j++){
+							row += "<td "
+							if($.inArray(data.numbers[j], data.called) >=0){
+								console.log('called')
+								row +="class=\"card-clicked\""
+							}
+							row += ">" + data.numbers[j] + "</td>"
+						}
+						row += "</tr>"
+						$('#user-card tbody').append(row);
+						$('#cardcollapse').collapse('show');
+					}
+				}
+			})
+		}
+		
         const callerSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -75,7 +133,6 @@
 		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/')
 		bingoSocket.onmessage = function(e) {
 			const data = JSON.parse(e.data);
-			console.log(data.type)
 			switch(data.type) {
 				case "bingo": 
 					$("#message").append(
@@ -85,8 +142,9 @@
 				case "login": 
 					if( $("#" + data.name + data.team).length) {
 						$("#" + data.name + data.team).addClass("bg-primary")
+						$("#" + data.name + data.team).css("cursor:pointer")
 					} else {
-						var row = "<tr class=\"bg-primary\" id=\"" + data.name + data.team + "\"><td>" + data.name + "</td><td>" + data.team + "</td><td>" + data.card + "</td></tr>"
+						var row = "<tr class=\"bg-primary\" id=\"" + data.name + data.team + "\" style=\"cursor:pointer;\"><td>" + data.name + "</td><td>" + data.team + "</td><td>" + data.card + "</td></tr>"
 						$('#active-users tbody').append(row)
 					}
 					break;
@@ -97,7 +155,6 @@
 		}
     </script>
 
-	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>
 	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
 </body>

@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from init.models import Callable
 from .models import CalledNumber
+from card.models import CardUser
 import random
 # Create your views here.
 def caller(request): 
     called = CalledNumber.objects.all().values_list('number', flat=True)
     called = "  ".join([str(i) for i in called]) + "  " 
-
+    users = CardUser.objects.all()
+    for user in users: 
+        print(user.user.email)
+        print(str(user.user_id) + " " + str(user.card_id))
     return render(request, 'caller.html', {
-        'called': called
+        'called': called,
+        'users': users
     })
 
 def new_number(request):
