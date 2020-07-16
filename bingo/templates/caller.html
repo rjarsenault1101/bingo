@@ -1,161 +1,40 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>NSO Bingo caller</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="{% static 'icons/favicon.ico' %}"/>
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
-
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
-	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
-	</nav>
-	<div id="message" class="container mt-5"></div>
-	<div class="container-fluid">
-		<div class="row p-5">
-			<div class="col-md-6 d-flex flex-column flex-row justify-content-center">
-				{% comment %} maybe make a list of the values available? And then highlight or cross out ones that get called? {% endcomment %}
-				<textarea id="callednumbers" class="callednumbers" disabled="true">{{ called }}</textarea>
-				<button id="callnumber" class="btn btn-block">Call Number</button>
-			</div> 
-			<div class="col-md-6">
-				<button type="button" class="btn btn-lg btn-success btn-block">Valid Bingo</button> 
-				<button id="resetnumbers" type="button" class="btn btn-danger btn-lg btn-block">Reset Game</button>
-			</div>
+{% block content %}
+<div class="container-fluid">
+	<div class="row p-5">
+		<div class="col">
+			{% comment %} maybe make a list of the values available? And then highlight or cross out ones that get called? {% endcomment %}
+			<textarea id="callednumbers" class="callednumbers" disabled="true">{{ called }}</textarea>
+			<button id="callnumber" class="btn btn-primary btn-lg btn-block">Call Number</button>
+			<button id="resetnumbers" type="button" class="btn btn-danger btn-lg btn-block">Reset Game</button>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<table class="table table-bordered table-dark table-striped" id="active-users">
-					<thead class="thead-dark">
-						<th>Name</th>
-						<th>Team</th>
-						<th>Card</th>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<textarea name="activity" id="activity" disabled class="bg-white" style="min-height: 300px; width: 100%; height: 100%; font-size: 1.6rem;"></textarea>
+		</div>
+		<div class="col-6">
+			<button class="btn btn-secondary dropdown-toggle btn-block"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Available Cards
+			</button>
+			<div id="card-ids" class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton"></div>
+			<div class='collapse show' id="cardcolllapse">
+				<table id='user-card' class="table card-table table-bordered">
+					<thead>
+						<tr class="cardRow head">
+							<th>b</th>
+							<th>i</th>  
+							<th>n</th>
+							<th>g</th>
+							<th>o</th>
+						</tr>
 					</thead>
-					<tbody>
-						{% for user in users %}
-							<tr id="{{user.user.username}}{{user.user.email}}">
-								<td>{{ user.user.username }}</td>
-								<td>{{ user.user.email }}</td>
-								{% comment %} We can also access user.card.(b|i|n|g|o) I think {% endcomment %}
-								{% comment %} data-toggle="collapse" data-target="#cardcollapse" {% endcomment %}
-								<td class="popover-test" style="cursor:pointer" onclick="toggleCollapse()">{{ user.card_id }}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-	<div class="collapse col-6 align-center offset-3" id="cardcollapse">
-      <table id='user-card' class="table card-table table-bordered col-6 align-center offset-3">
-	  	<thead>
-		  	<tr class="cardRow head">
-				<th>b</th>
-				<th>i</th>  
-				<th>n</th>
-				<th>g</th>
-				<th>o</th>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	  </table>
-    </div>
-	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
-	<script>
-		function toggleCollapse() {
-			//$('#cardcollapse').collapse('hide');
-			$('#user-card tbody').empty()
-			var id = $(event.target).text() // Button that triggered the modaljson
-			console.log(id)
-			$.ajax({
-				url: "http://" + window.location.host + "/" + id,
-				contentType: "application/json",
-				dataType: 'json',
-				success: function(result){
-					var data = JSON.parse(result);
-					console.log(data)
-					console.log(data.called)
-					console.log(data.numbers)
-					// append rows to table body
-					for(var i = 0; i<data.numbers.length; i+=5){ 
-						var row = "<tr class=\"cardRow\">";
-						for(var j = i; j<i+5; j++){
-							row += "<td "
-							if($.inArray(data.numbers[j], data.called) >=0){
-								console.log('called')
-								row +="class=\"card-clicked\""
-							}
-							row += ">" + data.numbers[j] + "</td>"
-						}
-						row += "</tr>"
-						$('#user-card tbody').append(row);
-						$('#cardcollapse').collapse('show');
-					}
-				}
-			})
-		}
-		
-        const callerSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/call/'
-        );
-		callerSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-			switch(data.type) {
-				case "call_number": 
-				    document.querySelector('#callednumbers').value += (data.number + '  ');
-					break;
-				case "reset": 
-					document.querySelector('#callednumbers').value = '';
-			}
-        };
-        callerSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#callnumber').onclick = function(e) {
-            callerSocket.send(JSON.stringify({
-				"type": "call"
-			}));
-        };
-		document.querySelector('#resetnumbers').onclick = function(e) {
-			callerSocket.send(JSON.stringify({
-				"type": "reset"
-			}))
-		}
-		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/')
-		bingoSocket.onmessage = function(e) {
-			const data = JSON.parse(e.data);
-			switch(data.type) {
-				case "bingo": 
-					$("#message").append(
-						'<div class="alert alert-danger alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><strong>' + data.bingo_alert + '</strong></div>'
-					)
-					break;
-				case "login": 
-					if( $("#" + data.name + data.team).length) {
-						$("#" + data.name + data.team).addClass("bg-primary")
-						$("#" + data.name + data.team).css("cursor:pointer")
-					} else {
-						var row = "<tr class=\"bg-primary\" id=\"" + data.name + data.team + "\" style=\"cursor:pointer;\"><td>" + data.name + "</td><td>" + data.team + "</td><td>" + data.card + "</td></tr>"
-						$('#active-users tbody').append(row)
-					}
-					break;
-				case "logout": 
-					$("#"+ data.name + data.team).removeClass("bg-primary")
-					break
-			}
-		}
-    </script>
-
-	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>
-	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
-</body>
-</html>
+</div>
+<script src="{% static 'js/caller.js'%}"></script>
+{% endblock %}

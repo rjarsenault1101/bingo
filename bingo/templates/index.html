@@ -1,65 +1,37 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>NSO Bingo</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="{% static 'icons/favicon.ico' %}"/>
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
-
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
-	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
-	</nav>
+{% block content%}
 	<div class="container">
-		<div id="message" class="container mt-5"></div>
 		<div class="row p-5">
-			<div class="col-6 d-flex justify-content-center">
-				<div class="table100">
-					<table class="table card-table" id="card">
-						<thead>
-							<tr class="cardRow head">
-								<th class="card-element">U</th>
-								<th class="card-element">P</th>
-								<th class="card-element">🐱‍👤</th>
-								<th class="card-element">E</th>
-								<th class="card-element">I</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for cell in numbers %}
-							{% if forloop.counter0|divisibleby:"5" %}
-							{% if forloop.counter0 > 0 %}</tr>{% endif %}
-							<tr class="cardRow">
-							{% endif %}
-								<td class="card-element cell">
-									{{ cell }}
-								</td>
-							{% endfor %}
-						</tbody>
+			<div class="col-md-6 offset-md-3">
+				<table class="table card-table" id="card">
+					<thead>
+						<tr class="cardRow head">
+							<th class="card-element">U</th>
+							<th class="card-element">P</th>
+							<th class="card-element">🐱‍👤</th>
+							<th class="card-element">E</th>
+							<th class="card-element">I</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for cell in numbers %}
+						{% if forloop.counter0|divisibleby:"5" %}
+						{% if forloop.counter0 > 0 %}</tr>{% endif %}
+						<tr class="cardRow">
+						{% endif %}
+							<td class="card-element cell">
+								{{ cell }}
+							</td>
+						{% endfor %}
+					</tbody>
+				</table>			
 					</table>
-				</div>
-			</div>
-			<div class="col-6 p-5">
-				<p>Called Numbers:</p>
-				<textarea id="callednumbers" class="callednumbers user" disabled="true">{{ called }}</textarea>
-				
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="bingo-button">				
-					<button id="bingo" class="btn btn-success btn-block" >BINGO!</button>
-				</div>
+				</table>			
+				<button id="bingo" class="btn btn-success btn-block" >BINGO!</button>
 			</div>
 		</div>
 	</div>
-	
 
 	<script>
 		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/');
@@ -74,27 +46,15 @@
 				'card_id': '{{ card_id }}'
 			}))
 		}
-		bingoSocket.onmessage = function(e) {
-			const data = JSON.parse(e.data);
-			switch(data.type){
-				case "bingo":
-					$('#bingo').disabled="true"
-					$("#message").append(
-						'<div class="alert alert-danger alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><strong>' + data.small_alert + '</strong></div>'
-					)
-			}
-		}
 		// Make the function wait until the connection is made...
 		function waitForSocketConnection(socket, callback){
 			setTimeout(
 				function () {
 					if (socket.readyState === 1) {
-						console.log("Connection is made")
 						if (callback != null){
 							callback();
 						}
 					} else {
-						console.log("wait for connection...")
 						waitForSocketConnection(socket, callback);
 					}
 
@@ -117,15 +77,10 @@
 		numberSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 			switch(data.type) {
-				case "call_number":
-					document.querySelector('#callednumbers').value += (data.number + '  ');
-					break;
 				case "reset": 
-					document.querySelector('#callednumbers').value = '';
 					$('#bingo').disabled = "false";
 					resetTable();
 					break;
-
 			}
         };
         numberSocket.onclose = function(e) {
@@ -139,10 +94,5 @@
 			})
 		}
     </script>
-	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
-	<script src="{% static 'vendor/bootstrap/js/popper.js'%}"></script>
-	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
-	<script src="{% static 'js/main.js'%}"></script>
-
-</body>
-</html>
+    <script src="{% static 'js/user.js'%}"></script>
+{% endblock %}

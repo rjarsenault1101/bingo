@@ -1,49 +1,27 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>NSO Bingo</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/png" href="{% static 'icons/favicon.ico' %}"/>
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
-
-</head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-dark upei-red">
-	  <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
-	</nav>
-	{% block content %}
-	<div class="container">
-		<div class="row d-flex justify-content-center">
-				<form onsubmit="{% url 'index' %}" method="POST" class="text-center">
-					{% csrf_token %}
-					<div class="form-group p-5">
-						<p class="h4 mb-4">Enter your Name and Team<p>
-						<div class="input-group">
-							<input type="text" class="form-control mb-4" name="name" placeholder="Name (first and last)">
-						</div>
-						<div class="input-group">
-							<select class="form-control mb-4" name="team">
-								<option disabled selected>Choose Team</option>
-								<option>Red</option>
-								<option>Orange</option>
-								<option>Green</option>
-								<option>Blue</option>
-								<option>Purple</option>
-							</select>
-						</div>
-						<input type="submit" class="btn btn-secondary btn-block" id="enterName"/>
-					</div>
-				</form>
-			
-		</div>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	<div class="row d-flex justify-content-center p-5 ">
+		<form method="POST" class="text-center border border-light p-3 mb-5 bg-white rounded">
+			{% csrf_token %}
+			<div class="form-group p-5">
+				<p class="h4 mb-4">Enter your Name and Team<p>
+				<div class="input-group">
+					<input type="text" class="form-control mb-4" name="name" placeholder="Name (first and last)">
+				</div>
+				<div class="input-group">
+					<select class="form-control mb-4" name="team">
+						<option disabled selected>Choose Team</option>
+						<option>Red</option>
+						<option>Orange</option>
+						<option>Green</option>
+						<option>Blue</option>
+						<option>Purple</option>
+					</select>
+				</div>
+				<input type="submit" class="btn btn-success btn-rounded btn-block" id="enterName"/>
+			</div>
+		</form>
 	</div>
-	{% endblock %}
-</body>
-</html>
+</div>
+{% endblock %}
