@@ -28,6 +28,7 @@ def index(request):
 
     return render(request, 'index.html', context)
 
+# Return a specific card's numbers
 def card(request, card_id):
     card = get_object_or_404(Card, pk=card_id)
     numbers = card.b + card.i + card.n + card.g + card.o
@@ -38,6 +39,14 @@ def card(request, card_id):
         'called': called
     })
     return JsonResponse(values, safe=False)
+
+def cards(request):
+    cards = list(Card.objects.all().values_list('id', flat=True))
+    values = json.dumps({
+        'cards': cards
+    })
+    return JsonResponse(values, safe=False)
+
 
 def get_called():
     called = list(CalledNumber.objects.all().values_list('number', flat=True))
