@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from .models import Card, CardUser
 from caller.models import CalledNumber
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required(login_url="/login")
 def index(request):
     user = User.objects.get(pk=request.user.id)
     called = get_called()
