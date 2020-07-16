@@ -59,7 +59,7 @@ callerSocket.onmessage = function (e) {
     case "call_number":
       console.log(data.number);
       $("#" + prevNum).removeClass("blink_me");
-      $("#" + prevNum).addClass("upei-gold");
+      $("#" + prevNum).addClass("upei-gold ");
       $("#" + data.number).addClass("blink_me");
       prevNum = data.number;
       break;

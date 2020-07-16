@@ -61,8 +61,16 @@ html {
   border: 3px solid #fbb040;
 }
 
+@media (max-width: 500px) {
+  .dropdown-menu {
+    height: 200px;
+    overflow-y: auto;
+  }
+}
+
 .upei-gold {
   background-color: #fbb040 !important;
+  color: #000 !important;
 }
 .card-element {
   border: 3px solid #fbb040;
