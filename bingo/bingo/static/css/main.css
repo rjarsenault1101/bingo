@@ -16,10 +16,10 @@ html {
 }
 
 .callednumbers {
-  display: block;
   outline: none;
   resize: none;
-  height: 100px;
+  height: 300px;
+  width: 100%;
   scroll-behavior: smooth;
 }
 .callednumbers.user {
