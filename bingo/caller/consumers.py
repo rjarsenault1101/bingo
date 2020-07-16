@@ -73,17 +73,6 @@ class BingoConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-        user = self.scope['user']
-        card_user = CardUser.objects.get(user_id=user.id)
-        # logout - remove name, team, card
-        async_to_sync(self.channel_layer.group_send)(
-            "login", {
-                'type': 'logout',
-                'name': user.username,
-                'team': user.email,
-                'card': card_user.card_id
-            }
-        )
         async_to_sync(self.channel_layer.group_discard)(
             "bingo", self.channel_name
         )
@@ -98,35 +87,27 @@ class BingoConsumer(WebsocketConsumer):
                     'type': 'bingo',
                     'name': text_data['name'],
                     'team': text_data['team'],
-                    'card': text_data['card_id']
+                    'card_id': text_data['card_id']
                 }
             )
         if text_data['type'] == 'login':
             async_to_sync(self.channel_layer.group_send)(
                 "login", {
                     'type': 'login',
-                    'name': text_data['name'],
-                    'team': text_data['team'],
-                    'card': text_data['card_id']
+                    # 'name': text_data['name'],
+                    # 'team': text_data['team'],
+                    'card_id': text_data['card_id']
                 }
             )
     def bingo(self, event):
         self.send(text_data=json.dumps({
                     'type': 'bingo',
-                    'bingo_alert': f"{event['name']} of the {event['team']} team called bingo!",
-                    'small_alert': f"Someone from the {event['team']} team has just called bingo!"
+                    'bingo_alert': f"[{event['card_id']}] - {event['name']} of the {event['team']} team called bingo!",
                 }))
     def login(self, event):
         self.send(text_data=json.dumps({
             'type': 'login',
-            'name': event['name'],
-            'team': event['team'],
-            'card': event['card']
-        }))
-    def logout(self, event):
-        self.send(text_data=json.dumps({
-            'type': 'logout',
-            'name': event['name'],
-            'team': event['team'],
-            'card': event['card']
+            # 'name': event['name'],
+            # 'team': event['team'],
+            'card_id': event['card_id']
         }))
