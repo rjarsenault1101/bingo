@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('card.urls')),
     path('caller/', include('caller.urls')),
     path('login/', include('bingoAuth.urls')),
+    path('bingo/', include('init.urls')),
 ]
