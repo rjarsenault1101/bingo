@@ -86,6 +86,21 @@ WSGI_APPLICATION = 'bingo.wsgi.application'
 ASGI_APPLICATION = 'bingo.routing.application'
 
 
+# Database
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bingo',
+        'USER': 'bingo',
+        'PASSWORD': 'potato',
+        'HOST': 'localhost',
+        'PORT': '5433',
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
