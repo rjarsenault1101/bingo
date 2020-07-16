@@ -86,21 +86,6 @@ WSGI_APPLICATION = 'bingo.wsgi.application'
 ASGI_APPLICATION = 'bingo.routing.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bingo',
-        'USER': 'bingo',
-        'PASSWORD': 'potato',
-        'HOST': 'localhost',
-        'PORT': '5433',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -143,3 +128,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'bingo/static')
 ]
 django_heroku.settings(locals())
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
