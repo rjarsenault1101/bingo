@@ -15,6 +15,16 @@ html {
   font-family: sans-serif;
 }
 
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    background-color: #8c2004;
+  }
+}
+
 .callednumbers {
   outline: none;
   resize: none;
@@ -43,13 +53,16 @@ html {
 .upei-red {
   background-color: #8c2004 !important;
 }
+.upei-green {
+  background-color: #5c8727;
+}
 
 .card-table {
   border: 3px solid #fbb040;
 }
 
-.card-clicked {
-  background-color: #aaaa00 !important;
+.upei-gold {
+  background-color: #fbb040 !important;
 }
 .card-element {
   border: 3px solid #fbb040;

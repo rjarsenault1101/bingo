@@ -1,0 +1,11 @@
+<table class="table table-bordered table-light card-table" id="numbergrid">
+    <tbody>
+    {% for number in numbers %}
+    {% if forloop.counter0|divisibleby:col_count %}
+    {% if forloop.counter0 > 0 %}</tr>{% endif %}
+    <tr class="cardRow">
+    {% endif %}
+        <td style="text-align: center;"id="{{number}}" {% if number in called %} class="upei-gold" {% endif %}>{{ number }}</td>
+    {% endfor %}
+    </tbody>
+</table>

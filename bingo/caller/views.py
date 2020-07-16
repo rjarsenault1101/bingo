@@ -5,12 +5,12 @@ from card.models import CardUser
 import random
 # Create your views here.
 def caller(request): 
-    called = CalledNumber.objects.all().values_list('number', flat=True)
-    called = "  ".join([str(i) for i in called]) + "  " 
-    users = CardUser.objects.all()
+    called = list(CalledNumber.objects.all().values_list('number', flat=True))
+    numbers = list(Callable.objects.all().values_list('value', flat=True))
     return render(request, 'caller.html', {
         'called': called,
-        'users': users
+        'numbers': numbers,
+        'col_count': len(numbers)/5
     })
 
 def new_number(request):

@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 function toggleCollapse() {
   $("#user-card tbody").empty();
-  var id = $(event.target).text(); // Button that triggered the modaljson
+  var id = $(event.target).text();
   $.ajax({
     url: "http://" + window.location.host + "/" + id,
     contentType: "application/json",
@@ -33,7 +33,10 @@ function toggleCollapse() {
         for (var j = i; j < i + 5; j++) {
           row += "<td ";
           if ($.inArray(data.numbers[j], data.called) >= 0) {
-            row += 'class="card-clicked"';
+            row += 'class="upei-gold"';
+          }
+          if (data.numbers[j] === "FREE") {
+            row += 'class="upei-gold"';
           }
           row += ">" + data.numbers[j] + "</td>";
         }
@@ -49,14 +52,21 @@ function toggleCollapse() {
 const callerSocket = new WebSocket(
   "ws://" + window.location.host + "/ws/call/"
 );
+prevNum = 0;
 callerSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   switch (data.type) {
     case "call_number":
-      document.querySelector("#callednumbers").value += data.number + "  ";
+      console.log(data.number);
+      $("#" + prevNum).removeClass("blink_me");
+      $("#" + prevNum).addClass("upei-gold");
+      $("#" + data.number).addClass("blink_me");
+      prevNum = data.number;
       break;
     case "reset":
-      document.querySelector("#callednumbers").value = "";
+      $("td").removeClass("blink_me");
+      $("td").removeClass("upei-gold");
+      prevNum = 0;
   }
 };
 callerSocket.onclose = function (e) {
