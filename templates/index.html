@@ -37,7 +37,14 @@
 	</div>
 
 	<script>
-		const bingoSocket = new WebSocket('ws://' + window.location.host + '/ws/bingo/');
+		if (window.location.protocol == "https:") {
+			var http_scheme = "https://";
+			var ws_scheme = "wss://";
+		} else {
+			var http_scheme = "http://";
+			var ws_scheme = "ws://";
+		}
+		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
 		}
@@ -73,7 +80,7 @@
 		});
 		
         const numberSocket = new WebSocket(
-            'ws://'
+            ws_scheme
             + window.location.host
             + '/ws/call/'
         );
