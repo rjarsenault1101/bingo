@@ -7,6 +7,8 @@ import random
 def caller(request): 
     called = list(CalledNumber.objects.all().values_list('number', flat=True))
     numbers = list(Callable.objects.all().values_list('value', flat=True))
+    numbers = [int(i) for i in numbers]
+    numbers.sort()
     return render(request, 'caller.html', {
         'called': called,
         'numbers': numbers,
