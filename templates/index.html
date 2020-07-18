@@ -44,15 +44,7 @@
 			var http_scheme = "http://";
 			var ws_scheme = "ws://";
 		}
-		$.ajax({
-			url: http_scheme + window.location.host + "/ws/bingo/",
-			type: "OPTIONS",
-		});
-		$.ajax({
-			url: http_scheme + window.location.host,
-			type: "OPTIONS",
-		});
-		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
+		const bingoSocket = new WebSocket(http_scheme + window.location.host + '/ws/bingo/');
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
 			console.log(e);
@@ -87,12 +79,8 @@
 				'card_id': '{{ card_id }}'
 			}))
 		});
-		$.ajax({
-			url: http_scheme + window.location.host + "/ws/call/",
-			type: "OPTIONS",
-		});
         const numberSocket = new WebSocket(
-            ws_scheme
+            http_scheme
             + window.location.host
             + '/ws/call/'
         );
