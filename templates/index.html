@@ -47,6 +47,7 @@
 		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
+			console.log(e);
 		}
 		document.querySelector("#bingo").onclick = function(e) {
 			bingoSocket.send(JSON.stringify({
@@ -95,6 +96,7 @@
         };
         numberSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
+			console.log(e);
         };
 		function resetTable() {
 			$('#card tr').each(function(){

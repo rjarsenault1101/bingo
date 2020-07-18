@@ -77,7 +77,8 @@ $(document).ready(function () {
     }
   };
   callerSocket.onclose = function (e) {
-    console.error("Chat socket closed unexpectedly");
+    console.error("Caller socket closed unexpectedly");
+    console.error(e);
   };
 
   document.querySelector("#callnumber").onclick = function (e) {
@@ -115,5 +116,9 @@ $(document).ready(function () {
         }
         break;
     }
+  };
+  bingoSocket.onclose = function (e) {
+    console.error("Bingo socket closed unexpectedly");
+    console.error(e);
   };
 });
