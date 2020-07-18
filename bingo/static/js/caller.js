@@ -55,7 +55,10 @@ $(document).ready(function () {
       },
     });
   }
-
+  $.ajax({
+    url: http_scheme + window.location.host + "/ws/call/",
+    type: "OPTIONS",
+  });
   const callerSocket = new WebSocket(
     "wss://" + window.location.host + "/ws/call/"
   );
@@ -95,6 +98,11 @@ $(document).ready(function () {
       })
     );
   };
+
+  $.ajax({
+    url: http_scheme + window.location.host + "/ws/bingo/",
+    type: "OPTIONS",
+  });
   const bingoSocket = new WebSocket(
     "wss://" + window.location.host + "/ws/bingo/"
   );
