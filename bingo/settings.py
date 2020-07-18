@@ -25,7 +25,7 @@ SECRET_KEY = '(11sjy+)wzh5cp!y6@@#t6c#f(6!t9bqh($u3&7fu4pef%sp#6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rj-49ccf5a6.localhost.run', 'localhost']
+ALLOWED_HOSTS = ['shrouded-ridge-91401.herokuapp.com', 'localhost']
 
 
 # Application definition
