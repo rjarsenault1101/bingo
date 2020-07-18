@@ -56,7 +56,7 @@ $(document).ready(function () {
     });
   }
   const callerSocket = new WebSocket(
-    http_scheme + window.location.host + "/ws/call/"
+    ws_scheme + window.location.host + "/ws/call/"
   );
   prevNum = 0;
   callerSocket.onmessage = function (e) {
@@ -96,7 +96,7 @@ $(document).ready(function () {
   };
 
   const bingoSocket = new WebSocket(
-    http_scheme + window.location.host + "/ws/bingo/"
+    ws_scheme + window.location.host + "/ws/bingo/"
   );
   bingoSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
