@@ -55,12 +55,8 @@ $(document).ready(function () {
       },
     });
   }
-  $.ajax({
-    url: http_scheme + window.location.host + "/ws/call/",
-    type: "OPTIONS",
-  });
   const callerSocket = new WebSocket(
-    "wss://" + window.location.host + "/ws/call/"
+    http_scheme + window.location.host + "/ws/call/"
   );
   prevNum = 0;
   callerSocket.onmessage = function (e) {
@@ -99,12 +95,8 @@ $(document).ready(function () {
     );
   };
 
-  $.ajax({
-    url: http_scheme + window.location.host + "/ws/bingo/",
-    type: "OPTIONS",
-  });
   const bingoSocket = new WebSocket(
-    "wss://" + window.location.host + "/ws/bingo/"
+    http_scheme + window.location.host + "/ws/bingo/"
   );
   bingoSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
