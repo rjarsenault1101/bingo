@@ -39,13 +39,17 @@
 	<script>
 		if (window.location.protocol == "https:") {
 			var http_scheme = "https://";
-			var ws_scheme = "ws://";
+			var ws_scheme = "wss://";
 		} else {
 			var http_scheme = "http://";
 			var ws_scheme = "ws://";
 		}
 		$.ajax({
 			url: http_scheme + window.location.host + "/ws/bingo/",
+			type: "OPTIONS",
+		});
+		$.ajax({
+			url: http_scheme + window.location.host,
 			type: "OPTIONS",
 		});
 		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
