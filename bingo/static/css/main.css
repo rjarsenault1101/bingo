@@ -77,6 +77,11 @@ html {
   background-color: #fbb040 !important;
   color: black !important;
 }
+
+.dropdown-menu {
+  height: 200px;
+  overflow-y: auto;
+}
 .card-element {
   border: 3px solid #fbb040;
   font-weight: unset;
