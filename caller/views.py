@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from init.models import Callable
 from .models import CalledNumber
-from card.models import CardUser
-import random
-# Create your views here.
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
 def caller(request): 
     called = list(CalledNumber.objects.all().values_list('number', flat=True))
     numbers = list(Callable.objects.all().values_list('value', flat=True))
@@ -16,6 +17,7 @@ def caller(request):
         'col_count': len(numbers)/5
     })
 
+@staff_member_required
 def clear_calls(request):
     # This goes and deletes all from the called database
     CalledNumber.objects.all().delete()
