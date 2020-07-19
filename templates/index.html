@@ -44,7 +44,7 @@
 			var http_scheme = "http://";
 			var ws_scheme = "ws://";
 		}
-		const bingoSocket = new WebSocket(ws_scheme + "username:password@" + window.location.host + '/ws/bingo/');
+		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/', ["access_token", "dGhpc2lzYXBhc3N3b3JkCg=="]);
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
 			console.log(e);
@@ -79,7 +79,7 @@
 				'card_id': '{{ card_id }}'
 			}))
 		});
-        const numberSocket = new WebSocket(ws_scheme + "username:password@" + window.location.host + '/ws/call/');
+        const numberSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/', ["access_token", "dGhpc2lzYXBhc3N3b3JkCg=="]);
 		numberSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 			switch(data.type) {
