@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<script src="{% static 'js/caller.js'%}"></script>
+
 <div class="container-fluid">
 	<div class="row p-5">
 		<div class="col">
@@ -37,5 +39,38 @@
 		</div>
 	</div>
 </div>
-<script src="{% static 'js/caller.js'%}"></script>
+<script>
+function toggleCollapse() {
+$("#user-card tbody").empty();
+var id = $(event.target).text();
+var	protocol = window.location.protocol === "http:" ? "http://":"https://";
+
+$.ajax({
+	url: protocol + window.location.host + "/" + id,
+	contentType: "application/json",
+	dataType: "json",
+	success: function (result) {
+		var data = JSON.parse(result);
+		console.log(data.numbers)
+		// append rows to table body
+		for (var i = 0; i < data.numbers.length; i += 5) {
+			var row = '<tr class="cardRow">';
+			for (var j = i; j < i + 5; j++) {
+			row += "<td ";
+			if ($.inArray(data.numbers[j], data.called) >= 0) {
+				row += 'class="upei-gold"';
+			}
+			if (data.numbers[j] === "FREE") {
+				row += 'class="upei-gold"';
+			}
+			row += ">" + data.numbers[j] + "</td>";
+			}
+			row += "</tr>";
+			$("#user-card tbody").append(row);
+			$("#cardcollapse").collapse("show");
+		}
+	}
+});
+}
+</script>
 {% endblock %}

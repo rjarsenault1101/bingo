@@ -32,6 +32,11 @@ html {
   width: 100%;
   scroll-behavior: smooth;
 }
+
+#bingo {
+  border-color: #fbb040;
+  border-width: 2px;
+}
 .callednumbers.user {
   width: 500px;
 }
@@ -70,7 +75,7 @@ html {
 
 .upei-gold {
   background-color: #fbb040 !important;
-  color: #000 !important;
+  color: black !important;
 }
 .card-element {
   border: 3px solid #fbb040;
@@ -103,5 +108,5 @@ html {
   text-align: center;
   font-size: 24px;
   background-color: #5c8727;
-  color: #fff !important;
+  color: #fff;
 }

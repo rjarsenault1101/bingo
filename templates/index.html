@@ -55,7 +55,8 @@
 				'name': '{{ user.username }}',
 				'team': '{{ user.email }}',
 				'card_id': '{{ card_id }}'
-			}))
+			}));
+			$(this).prop('disabled',true);
 		}
 		// Make the function wait until the connection is made...
 		function waitForSocketConnection(socket, callback){
@@ -84,14 +85,13 @@
             const data = JSON.parse(e.data);
 			switch(data.type) {
 				case "reset": 
-					$('#bingo').disabled = "false";
+					$('#bingo').prop('disabled',false);
 					resetTable();
 					break;
 			}
         };
         numberSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
-			console.log(e);
         };
 		function resetTable() {
 			$('#card tr').each(function(){
