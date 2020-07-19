@@ -1,8 +1,6 @@
 import json, random
-from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync, sync_to_async
-from card.models import CardUser
+from asgiref.sync import async_to_sync
 from init.models import Callable
 from .models import CalledNumber
 
