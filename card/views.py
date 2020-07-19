@@ -27,7 +27,6 @@ def index(request):
         'numbers': numbers, 
         'user': user
     }
-    print(request.headers)
     return render(request, 'index.html', context)
 
 # Return a specific card's numbers

@@ -10,11 +10,11 @@
 				<table class="table card-table" id="card">
 					<thead>
 						<tr class="cardRow head">
-							<th class="card-element">U</th>
-							<th class="card-element">P</th>
-							<th class="card-element"><a href="{% static 'icon/panther.png' %}"></a></th>
-							<th class="card-element">E</th>
+							<th class="card-element">B</th>
 							<th class="card-element">I</th>
+							<th class="card-element">N</th>
+							<th class="card-element">G</th>
+							<th class="card-element">O</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -47,7 +47,6 @@
 		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
-			console.log(e);
 		}
 		document.querySelector("#bingo").onclick = function(e) {
 			bingoSocket.send(JSON.stringify({

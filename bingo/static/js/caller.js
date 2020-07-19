@@ -6,7 +6,17 @@ $(document).ready(function () {
     var http_scheme = "http://";
     var ws_scheme = "ws://";
   }
+  rows = $.each($("#numbergrid tbody tr"), function (
+    indexInArray,
+    valueOfElement
+  ) {
+    bingo = ["B", "I", "N", "G", "O"]
 
+    $('<td style="background-color: #333333;">' + bingo[indexInArray] + '</td>').prependTo(
+      $(valueOfElement)
+    );
+    console.log(valueOfElement);
+  });
   $.ajax({
     url: http_scheme + window.location.host + "/cards",
     contentType: "application/json",
@@ -33,7 +43,6 @@ $(document).ready(function () {
     const data = JSON.parse(e.data);
     switch (data.type) {
       case "call_number":
-        console.log(data.number);
         $("#" + prevNum).removeClass("blink_me");
         $("#" + prevNum).addClass("upei-gold");
         $("#" + data.number).addClass("blink_me");
@@ -90,6 +99,5 @@ $(document).ready(function () {
   };
   bingoSocket.onclose = function (e) {
     console.error("Bingo socket closed unexpectedly");
-    console.error(e);
   };
 });
