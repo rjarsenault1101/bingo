@@ -10,12 +10,17 @@ $(document).ready(function () {
     indexInArray,
     valueOfElement
   ) {
-    bingo = ["B", "I", "N", "G", "O"]
+    bingo = ["B", "I", "N", "G", "O"];
+    $.each($(valueOfElement).find("td"), function (
+      indexInArray2,
+      valueOfElement2
+    ) {
+      valueOfElement2.prepend(bingo[indexInArray]);
+    });
 
-    $('<td style="background-color: #333333;">' + bingo[indexInArray] + '</td>').prependTo(
-      $(valueOfElement)
-    );
-    console.log(valueOfElement);
+    $(
+      '<td style="background-color: #333333;">' + bingo[indexInArray] + "</td>"
+    ).prependTo($(valueOfElement));
   });
   $.ajax({
     url: http_scheme + window.location.host + "/cards",
