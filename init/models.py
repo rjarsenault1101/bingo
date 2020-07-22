@@ -5,4 +5,4 @@ class Callable(models.Model):
     value = models.CharField(max_length=50)
 
 class Team(models.Model):
-    value = models.CharField(max_length=50)
+    team = models.CharField(max_length=50)
