@@ -2,7 +2,64 @@
 {% load static %}
 {% block title %} | Setup {% endblock %}
 {% block content %}
-<p>Hi</p>
+<script>
+    $(document).ready(function() {
+        $('input:radio[name="bingo"]').change(function() {
+            console.log($(this).val())
+            if ($(this).val() == 'classic') {
+                $("#customtextarea").prop("disabled", true);
+            } else {
+                $("#customtextarea").prop("disabled", false);
+            }
+        });
+        $('#initform').submit(function(event) {
+            console.log($("input:radio[name='bingo']").val())
+            return false;
+            if( $("input:radio[name='bingo']").val() == 'custom') {
+
+                const values = $("#customtextarea").val();
+                console.log(values);
+                if(values.split(",").length < 25) {
+                    alert("For custom bingo you need at least 25 options.")
+                    return false
+                }
+            }
+            return true;
+        })
+    })
+</script>
+<div class="container">
+	<div class="row d-flex justify-content-center p-5 ">
+		<form id="initform" method="POST" class="border border-light p-3 mb-5 bg-white rounded">
+            {% csrf_token %}
+			<div class="form-group p-5">
+                <div class="row">
+                    <div class="col">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="classic" name="bingo" value="classic" class="custom-control-input">
+                            <label class="custom-control-label" for="classic">classic bingo</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="custom" name="bingo" value="custom" class="custom-control-input">
+                            <label class="custom-control-label" for="custom">Custom bingo</label>
+                            <label for="exampleFormControlTextarea1">Enter values for the bingo card:</label>
+                            <textarea name="values" id="customtextarea" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="name">Name of the group: </label>
+                        <input type="text" class="form-control mb-4" name="name" >
+                        <label for="name">Card Header: </label>
+                        <input type="text" class="form-control mb-4" placeholder="bingo" name="cardheader" >
+                    </div>
+                </div>
+                <div class="row pt-5">
+                	<input type="submit" class="btn btn-success btn-rounded btn-block" id="enterName"/>
+                </div>
+			</div>
+		</form>
+	</div>
+</div>
 
 
 {% endblock %}
