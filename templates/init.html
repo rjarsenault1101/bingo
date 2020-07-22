@@ -5,7 +5,6 @@
 <script>
     $(document).ready(function() {
         $('input:radio[name="bingo"]').change(function() {
-            console.log($(this).val())
             if ($(this).val() == 'classic') {
                 $("#customtextarea").prop("disabled", true);
             } else {
@@ -13,8 +12,6 @@
             }
         });
         $('#initform').submit(function(event) {
-            console.log($("input:radio[name='bingo']").val())
-            return false;
             if( $("input:radio[name='bingo']").val() == 'custom') {
 
                 const values = $("#customtextarea").val();
@@ -26,35 +23,49 @@
             }
             return true;
         })
+        $('input:checkbox[name="teams"]').change(function() {
+            if($(this).is(":checked")) {
+                $("#teamsbox").prop("disabled", false);
+            } else {
+                $("#teamsbox").prop("disabled", true);
+            }
+        })
     })
 </script>
 <div class="container">
 	<div class="row d-flex justify-content-center p-5 ">
 		<form id="initform" method="POST" class="border border-light p-3 mb-5 bg-white rounded">
             {% csrf_token %}
-			<div class="form-group p-5">
+			<div class="form-group px-5 pt-5">
                 <div class="row">
-                    <div class="col">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="classic" name="bingo" value="classic" class="custom-control-input">
-                            <label class="custom-control-label" for="classic">classic bingo</label>
+                    <div class="input-group">
+                        <div class="col">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="classic" name="bingo" value="classic" class="custom-control-input">
+                                <label class="custom-control-label" for="classic">classic bingo</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="custom" name="bingo" value="custom" class="custom-control-input">
+                                <label class="custom-control-label" for="custom">Custom bingo</label>
+                                <label for="exampleFormControlTextarea1">Enter values for the bingo card:</label>
+                                <textarea name="values" id="customtextarea" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ..."></textarea>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="custom" name="bingo" value="custom" class="custom-control-input">
-                            <label class="custom-control-label" for="custom">Custom bingo</label>
-                            <label for="exampleFormControlTextarea1">Enter values for the bingo card:</label>
-                            <textarea name="values" id="customtextarea" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ..."></textarea>
+                        <div class="col">
+                            <label for="name">Name of the group: </label>
+                            <input type="text" class="form-control mb-4" name="name" >
+                            <label for="name">Card Header: </label>
+                            <input type="text" class="form-control mb-4" placeholder="bingo" name="cardheader" >
                         </div>
-                    </div>
-                    <div class="col">
-                        <label for="name">Name of the group: </label>
-                        <input type="text" class="form-control mb-4" name="name" >
-                        <label for="name">Card Header: </label>
-                        <input type="text" class="form-control mb-4" placeholder="bingo" name="cardheader" >
                     </div>
                 </div>
-                <div class="row pt-5">
-                	<input type="submit" class="btn btn-success btn-rounded btn-block" id="enterName"/>
+                <div class="row pt-3">
+                    <div class="input-group ml-4">
+                        <input type="checkbox" id="teams" name="teams" class="form-check-input">
+                        <label for="teams">Teams?</label>
+                    </div>
+                    <textarea name="teamsbox" disabled class="form-control" id="teamsbox" placeholder="team1,team2,..."></textarea>
+                	<input type="submit" class="btn btn-success btn-rounded btn-block mt-5" id="enterName"/>
                 </div>
 			</div>
 		</form>
