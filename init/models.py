@@ -6,3 +6,7 @@ class Callable(models.Model):
 
 class Team(models.Model):
     team = models.CharField(max_length=50)
+
+class Info(models.Model):
+    card_name = models.CharField(max_length=10)
+    group_name = models.CharField(max_length=20)
