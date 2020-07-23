@@ -3,23 +3,21 @@
 {% block content%}
 	<div class="container">
 		<div class="row">
-			<div class="col text-center"><h1>Welcome, {{user.username|title}}, of the {{user.email}} team</h1></div>
+			<div class="col text-center"><h1>Welcome, {{user.username|title}}</h1></div>
 		</div>
 		<div class="row p-5">
 			<div class="col-md-6 offset-md-3">
 				<table class="table card-table" id="card">
 					<thead>
 						<tr class="cardRow head">
-							<th class="card-element">B</th>
-							<th class="card-element">I</th>
-							<th class="card-element">N</th>
-							<th class="card-element">G</th>
-							<th class="card-element">O</th>
+							{% for letter in cardName|make_list %}
+								<th class="card-element">{{ letter }}</th>
+							{% endfor %}
 						</tr>
 					</thead>
 					<tbody>
 						{% for cell in numbers %}
-						{% if forloop.counter0|divisibleby:"5" %}
+						{% if forloop.counter0|divisibleby:{{cardName|length}} %}
 						{% if forloop.counter0 > 0 %}</tr>{% endif %}
 						<tr class="cardRow">
 						{% endif %}
