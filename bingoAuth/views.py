@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 import json
 from django.contrib import auth
 from django.contrib.auth.models import User
-
+from init.models import Team
 # Create your views here.
 def login(request):
+    teams = list(Team.objects.all().values_list('team', flat=True))
     if request.method == 'POST': 
         username = request.POST['name']
         team = request.POST['team']
@@ -19,4 +20,4 @@ def login(request):
             user.save()
         auth.login(request, user)
         return redirect('index')
-    return render(request, 'registration/login.html')
+    return render(request, 'registration/login.html', context={'teams': teams})
