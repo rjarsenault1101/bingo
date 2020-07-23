@@ -6,15 +6,15 @@
     $(document).ready(function() {
         $('input:radio[name="bingo"]').change(function() {
             if ($(this).val() == 'classic') {
-                $("#customtextarea").prop("disabled", true);
+                $("#customvalues").prop("disabled", true);
             } else {
-                $("#customtextarea").prop("disabled", false);
+                $("#customvalues").prop("disabled", false);
             }
         });
         $('#initform').submit(function(event) {
             if( $("input:radio[name='bingo']").val() == 'custom') {
 
-                const values = $("#customtextarea").val();
+                const values = $("#customvalues").val();
                 if(values.split(",").length < 25) {
                     alert("For custom bingo you need at least 25 options.")
                     return false
@@ -40,14 +40,14 @@
                     <div class="input-group">
                         <div class="col">
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="classic" name="bingo" value="classic" class="custom-control-input">
+                                <input type="radio" id="classic" name="bingo" value="classic" checked class="custom-control-input">
                                 <label class="custom-control-label" for="classic">classic bingo</label>
                             </div>
                             <div class="custom-control custom-radio">
                                 <input type="radio" id="custom" name="bingo" value="custom" class="custom-control-input">
                                 <label class="custom-control-label" for="custom">Custom bingo</label>
                                 <label for="exampleFormControlTextarea1">Enter values for the bingo card:</label>
-                                <textarea name="values" id="customtextarea" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ...">{{ values }}</textarea>
+                                <textarea name="customvalues" disabled id="customvalues" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ...">{{ values }}</textarea>
                             </div>
                         </div>
                         <div class="col">
