@@ -5,20 +5,20 @@
 		<form method="POST" class="text-center border border-light p-3 mb-5 bg-white rounded">
 			{% csrf_token %}
 			<div class="form-group p-5">
-				<p class="h4 mb-4">Enter your Name and Team<p>
+				<p class="h4 mb-4">Enter your Name{% if teams %} and Team{% endif %}<p>
 				<div class="input-group">
 					<input type="text" class="form-control mb-4" name="name" placeholder="Name (first and last)">
 				</div>
+				{% if teams %}
 				<div class="input-group">
 					<select class="form-control mb-4" name="team">
 						<option disabled selected>Choose Team</option>
-						<option>Red</option>
-						<option>Orange</option>
-						<option>Green</option>
-						<option>Blue</option>
-						<option>Purple</option>
+						{% for team in teams %}
+						<option>{{ team }}</option>
+						{% endfor %}
 					</select>
 				</div>
+				{% endif %}
 				<input type="submit" class="btn btn-success btn-rounded btn-block" id="enterName"/>
 			</div>
 		</form>
