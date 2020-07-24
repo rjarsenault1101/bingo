@@ -47,14 +47,16 @@
                                 <input type="radio" id="custom" name="bingo" value="custom" class="custom-control-input">
                                 <label class="custom-control-label" for="custom">Custom bingo</label>
                                 <label for="exampleFormControlTextarea1">Enter values for the bingo card:</label>
-                                <textarea name="customvalues" disabled id="customvalues" style="min-width: 300px;" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="value1, value2, value3, ...">{{ values }}</textarea>
+                                <textarea name="customvalues" disabled id="customvalues" style="min-width: 300px; min-height: 300px;" class="form-control" id="exampleFormControlTextarea1" placeholder="value1, value2, value3, ...">{{ values }}</textarea>
                             </div>
                         </div>
                         <div class="col">
                             <label for="name">Name of the group: </label>
-                            <input type="text" class="form-control mb-4" maxlength="20" name="name" >
-                            <label for="name">Card Header: </label>
-                            <input type="text" class="form-control mb-4" placeholder="bingo" maxlength="10" name="cardheader">
+                            <input type="text" class="form-control mb-4" maxlength="20" value="Bingo party!" name="name" >
+                            <label for="cardheader">Card Header: </label>
+                            <input type="text" class="form-control mb-4" value="bingo" maxlength="10" name="cardheader">
+                            <label for="cardrows">Number of rows for a card: </label>
+                            <input type="number" class="form-control mb-4" min="0" max="10" value="5" name="cardrows">
                         </div>
                     </div>
                 </div>

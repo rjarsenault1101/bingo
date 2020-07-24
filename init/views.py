@@ -41,10 +41,11 @@ def init(request):
 
         if 'cardheader' in request.POST:
             card_header = request.POST['cardheader']
-
+            
         Info(
             card_name=card_header if card_header else "bingo",
-            group_name=group_name if group_name else "Bingo!"
+            group_name=group_name if group_name else "Bingo!",
+            card_rows=request.POST['cardrows']
         ).save()
 
         return redirect('index')

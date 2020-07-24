@@ -10,3 +10,4 @@ class Team(models.Model):
 class Info(models.Model):
     card_name = models.CharField(max_length=10)
     group_name = models.CharField(max_length=20)
+    card_rows = models.IntegerField()
