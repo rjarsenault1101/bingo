@@ -3,9 +3,9 @@
     e.preventDefault();
     var color = $(this).css("background-color");
     if (color == "rgb(92, 135, 39)") {
-      $(this).css("background-color", "#aaaa00");
+      $(this).addClass("upei-gold");
     } else {
-      $(this).css("background-color", "#5c8727");
+      $(this).removeClass("upei-gold");
     }
     e.stopImmediatePropagation();
   });
