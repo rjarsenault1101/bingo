@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
-import json
 from django.contrib import auth
 from django.contrib.auth.models import User
 from init.models import Team
-# Create your views here.
+
+
 def login(request):
     teams = list(Team.objects.all().values_list('team', flat=True))
     if request.method == 'POST': 
         username = request.POST['name']
-        team = request.POST['team']
+        team = request.POST.get('team')
+        team = team if team else "team"
         user = None
         try:
             user = User.objects.get(username=username, email=team)

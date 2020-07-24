@@ -17,10 +17,12 @@
 					</thead>
 					<tbody>
 						{% for cell in numbers %}
-						{% if forloop.counter0|divisibleby:{{cardName|length}} %}
+						{% with divide=cardName|length %}
+						{% if forloop.counter0|divisibleby:divide %}
 						{% if forloop.counter0 > 0 %}</tr>{% endif %}
 						<tr class="cardRow">
 						{% endif %}
+						{% endwith %}
 							<td class="card-element cell">
 								{{ cell }}
 							</td>

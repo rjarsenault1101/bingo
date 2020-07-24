@@ -4,7 +4,7 @@ from .models import Callable, Team, Info
 from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
-def index(request):
+def init(request):
     # Get the teams, get the values, name and card header to populate
     callable_values = list(Callable.objects.all().values_list('value', flat=True))
     callable_values = ", ".join(callable_values)
@@ -46,7 +46,7 @@ def index(request):
             card_name=card_header if card_header else "bingo",
             group_name=group_name if group_name else "Bingo!"
         ).save()
-        
+
         return redirect('index')
     return render(request, 'init.html', context)
 
