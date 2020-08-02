@@ -103,10 +103,9 @@ $(document).ready(function () {
               "</button>"
           );
         }
-        // Increase usercount
-        users = data.total
-        console.log(users)
-        break;
+      case "logout":
+        users = data.users;
+        $("#activeusers").text("Active users: " + users);
     }
   };
   bingoSocket.onclose = function (e) {
