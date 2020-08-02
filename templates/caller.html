@@ -3,7 +3,7 @@
 {% block content %}
 <script src="{% static 'js/caller.js'%}"></script>
 
-<div class="container-fluid">
+<div id="caller-container" class="container-fluid">
 	<div class="row p-5">
 		<div class="col">
 			{% comment %} maybe make a list of the values available? And then highlight or cross out ones that get called? {% endcomment %}
@@ -38,6 +38,9 @@
 	</div>
 </div>
 <script>
+$(document).ready(function() {
+	$("#userspanel").prop("open", "false")
+})
 function toggleCollapse() {
 $("#user-card tbody").empty();
 var id = $(event.target).text();
@@ -68,6 +71,29 @@ $.ajax({
 		}
 	}
 });
+}
+function toggleNav() {
+	if($("#userspanel").prop("open") == "false") {
+		$.get("/caller/users", function (d) {
+		var data = JSON.parse(d);
+		$("#userstable tbody").empty()
+		for (var i = 0; i < data.users.length; i++) {
+			var row = "<tr>";
+			row += "<td>" + data.users[i].username + "</td>";
+			row += "<td>" + data.users[i].team + "</td>";
+			row += "</tr>";
+			$("#userstable tbody").append(row)
+		}
+		$("#userspanel").prop("open", "true")
+		$("#userspanel").css('width', "20%");
+		});
+	} else {
+		closeNav()
+	}
+}
+function closeNav() {
+	$("#userspanel").css('width', "0");
+  	$("#userspanel").prop("open", "false")
 }
 </script>
 {% endblock %}

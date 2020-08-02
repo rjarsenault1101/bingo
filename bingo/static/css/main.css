@@ -38,6 +38,36 @@ html {
   background-color: #5c8727;
 }
 
+.sidepanel {
+  height: 100%;
+  right: 0;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  background-color: #8c2004;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+#caller-container {
+  transition: margin-left 0.5s;
+  padding: 16px;
+}
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 36px;
+  margin-right: 50px;
+  padding: 8px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
 .card-table {
   border: 3px solid #fbb040;
 }
