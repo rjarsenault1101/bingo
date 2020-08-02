@@ -48,15 +48,18 @@
 		bingoSocket.onclose = function(e) {
 			console.error('Bingo socket closed unexpectedly');
 		}
-		document.querySelector("#bingo").onclick = function(e) {
+		$("#bingo").click(function(e) {
+			var audio = new Audio('{% static "bingo.mp3" %}');
 			bingoSocket.send(JSON.stringify({
 				'type': 'bingo',
 				'name': '{{ user.username }}',
 				'team': '{{ user.email }}',
 				'card_id': '{{ card_id }}'
 			}));
+  			audio.play();
+			$("#message").append('<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>You\'ve called bingo!</div>');
 			$(this).prop('disabled',true);
-		}
+		});
 		// Make the function wait until the connection is made...
 		function waitForSocketConnection(socket, callback){
 			setTimeout(
