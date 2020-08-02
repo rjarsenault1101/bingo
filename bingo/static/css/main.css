@@ -50,10 +50,7 @@ html {
   padding-top: 60px;
   transition: 0.5s;
 }
-#caller-container {
-  transition: margin-left 0.5s;
-  padding: 16px;
-}
+
 .sidepanel .closebtn {
   position: absolute;
   top: 0;
