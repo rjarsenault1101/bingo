@@ -103,7 +103,9 @@ $(document).ready(function () {
               "</button>"
           );
         }
-        break;
+      case "logout":
+        users = data.users;
+        $("#activeusers").text("Active users: " + users);
     }
   };
   bingoSocket.onclose = function (e) {
