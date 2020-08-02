@@ -44,6 +44,29 @@ class CallConsumer(WebsocketConsumer):
                     'type': 'reset'
                 }
             )
+        if data['type'] == 'resetwithnew': 
+            # Clear the callables (and called)
+            CalledNumber.objects.all().delete()
+            Callable.objects.all().delete()
+            values = data['values']
+            for value in values:
+                Callable(value=value).save()        
+            # Push all the new values to the callables
+            # Force all cards to update
+            # Force number board to update
+
+            async_to_sync(self.channel_layer.group_send)(
+                "numbercalling",
+                {
+                    'type': 'resetwithnew',
+                    'values': values
+                }
+            )
+    def resetwithnew(self, event):
+        self.send(text_data=json.dumps({
+            'type': 'resetwithnew',
+            'values': event['values']
+        }))
     def reset(self, event):
         self.send(text_data=json.dumps({
             'type': 'reset'

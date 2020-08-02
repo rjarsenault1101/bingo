@@ -1,4 +1,7 @@
 $(document).ready(function () {
+  /*
+   * LAUNCH STUFF
+   */
   if (window.location.protocol == "https:") {
     var http_scheme = "https://";
     var ws_scheme = "wss://";
@@ -40,6 +43,42 @@ $(document).ready(function () {
     },
   });
 
+  /*
+   * BUTTON HANDLERS
+   */
+  $("#callnumber").click(function () {
+    callerSocket.send(
+      JSON.stringify({
+        type: "call",
+      })
+    );
+  });
+
+  $("#resetnumbers").click(function () {
+    callerSocket.send(
+      JSON.stringify({
+        type: "reset",
+      })
+    );
+  });
+  $("#submitnewnumbers").click(function () {
+    var newnumbers = $("#newnumbersarea").val();
+    newnumbers = newnumbers.split(",");
+    newnumbers = newnumbers.map((element) => element.trim());
+    cleaned = newnumbers.filter(function (num) {
+      return num !== "";
+    });
+    callerSocket.send(
+      JSON.stringify({
+        type: "resetwithnew",
+        values: cleaned,
+      })
+    );
+  });
+  /*
+   *  WEBSOCKETS
+   */
+
   const callerSocket = new WebSocket(
     ws_scheme + window.location.host + "/ws/call/"
   );
@@ -53,6 +92,21 @@ $(document).ready(function () {
         $("#" + data.number).addClass("blink_me");
         prevNum = data.number;
         break;
+      case "resetwithnew":
+        const values = data.values;
+        const body = $("#numbergrid tbody");
+        body.empty();
+        const cols = values.length / 5;
+        for (var j = 0; j < 5; j++) {
+          row = $("<tr class='cardRow'></tr>");
+          for (var i = 0; i < cols; i++) {
+            row.append("<td>" + values[cols * j + i] + "</td>");
+          }
+          body.append(row);
+        }
+
+      // Reset table with new values
+      // Divide the data into 5
       case "reset":
         $("td").removeClass("blink_me");
         $("td").removeClass("upei-gold");
@@ -63,21 +117,6 @@ $(document).ready(function () {
   callerSocket.onclose = function (e) {
     console.error("Caller socket closed unexpectedly");
     console.error(e);
-  };
-
-  document.querySelector("#callnumber").onclick = function (e) {
-    callerSocket.send(
-      JSON.stringify({
-        type: "call",
-      })
-    );
-  };
-  document.querySelector("#resetnumbers").onclick = function (e) {
-    callerSocket.send(
-      JSON.stringify({
-        type: "reset",
-      })
-    );
   };
 
   const bingoSocket = new WebSocket(
