@@ -103,6 +103,9 @@ $(document).ready(function () {
               "</button>"
           );
         }
+        // Increase usercount
+        users = data.total
+        console.log(users)
         break;
     }
   };
