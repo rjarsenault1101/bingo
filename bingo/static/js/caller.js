@@ -87,10 +87,14 @@ $(document).ready(function () {
     const data = JSON.parse(e.data);
     switch (data.type) {
       case "bingo":
+        
         $("#activity").append(
           '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>' +
             data.bingo_alert +
             "</div>"
+        );
+        $("#message").append(
+          '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>Someone called bingo!</div>'
         );
         break;
       case "login":
