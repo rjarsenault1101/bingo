@@ -23,7 +23,7 @@ class CallConsumer(WebsocketConsumer):
     # This gets called by the caller's new number button
     def receive(self, text_data):
         data = json.loads(text_data)
-        if data['type'] == 'call':        
+        if data['type'] == 'call':    
             called = CalledNumber.objects.all().values_list('number', flat=True)
             callable_items = Callable.objects.values('value').exclude(value__in=called).values_list('value', flat=True)
             callable_items = list(callable_items)
@@ -60,7 +60,7 @@ class CallConsumer(WebsocketConsumer):
 
 # This one is for when someone calls bingo. Maybe also when they connect? Receive their name/team/cardID?
 class BingoConsumer(WebsocketConsumer):
-    
+
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(
             "bingo", self.channel_name
@@ -92,11 +92,13 @@ class BingoConsumer(WebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 "login", {
                     'type': 'login',
-                    # 'name': text_data['name'],
-                    # 'team': text_data['team'],
-                    'card_id': text_data['card_id']
+                    'name': text_data['name'],
+                    'team': text_data['team'],
+                    'card_id': text_data['card_id'],
+                    'count': self.logged_in,
                 }
             )
+
     def bingo(self, event):
         self.send(text_data=json.dumps({
                     'type': 'bingo',
@@ -105,7 +107,8 @@ class BingoConsumer(WebsocketConsumer):
     def login(self, event):
         self.send(text_data=json.dumps({
             'type': 'login',
-            # 'name': event['name'],
-            # 'team': event['team'],
-            'card_id': event['card_id']
+            'name': event['name'],
+            'team': event['team'],
+            'card_id': event['card_id'],
+            'total': event['count'],
         }))
