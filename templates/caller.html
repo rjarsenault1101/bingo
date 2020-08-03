@@ -15,10 +15,10 @@
 	<div class="row">
 		<div class="col-6" id="activity"></div>
 		<div class="col-6">
-			<button class="btn btn-secondary dropdown-toggle btn-block"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Available Cards
-			</button>
-			<div id="card-ids" class="dropdown-menu btn-block" aria-labelledby="dropdownMenuButton"></div>
+			<form id="searchcard" class="form-inline">
+		  		<input type="text" class="form-control mb-2 mr-sm-2" style="width: 50%;" id="cardid" placeholder="Enter card ID to view">
+				<button type="submit" class="btn btn-primary mb-2">Submit</button>
+			</form>
 			
 			<div class='collapse show' id="cardcolllapse">
 				<table id='user-card' class="table card-table table-bordered">
@@ -41,36 +41,45 @@
 $(document).ready(function() {
 	$("#userspanel").prop("open", "false")
 })
-function toggleCollapse() {
-$("#user-card tbody").empty();
-var id = $(event.target).text();
-var	protocol = window.location.protocol === "http:" ? "http://":"https://";
-
-$.ajax({
-	url: protocol + window.location.host + "/" + id,
-	contentType: "application/json",
-	dataType: "json",
-	success: function (result) {
-		var data = JSON.parse(result);
-		// append rows to table body
-		for (var i = 0; i < data.numbers.length; i += 5) {
-			var row = '<tr class="cardRow">';
-			for (var j = i; j < i + 5; j++) {
-			row += "<td ";
-			if ($.inArray(data.numbers[j], data.called) >= 0) {
-				row += 'class="upei-gold"';
-			}
-			if (data.numbers[j] === "FREE") {
-				row += 'class="upei-gold"';
-			}
-			row += ">" + data.numbers[j] + "</td>";
-			}
-			row += "</tr>";
-			$("#user-card tbody").append(row);
-			$("#cardcollapse").collapse("show");
-		}
+$("#searchcard").submit(function(event) {
+	event.preventDefault();
+	var id = parseInt($(this).find(":input#cardid").val());
+	if(Number.isInteger(id)) {
+		getCard(id)
+	} else {
+		//alert bad?
 	}
-});
+})
+function getCard(id) {
+	$("#user-card tbody").empty();
+	var	protocol = window.location.protocol === "http:" ? "http://":"https://";
+
+	$.ajax({
+		url: protocol + window.location.host + "/" + id,
+		contentType: "application/json",
+		dataType: "json",
+		success: function (result) {
+			var data = JSON.parse(result);
+			console.log(data);
+			// append rows to table body
+			for (var i = 0; i < data.numbers.length; i += 5) {
+				var row = '<tr class="cardRow">';
+				for (var j = i; j < i + 5; j++) {
+				row += "<td ";
+				if ($.inArray(data.numbers[j], data.called) >= 0) {
+					row += 'class="upei-gold"';
+				}
+				if (data.numbers[j] === "FREE") {
+					row += 'class="upei-gold"';
+				}
+				row += ">" + data.numbers[j] + "</td>";
+				}
+				row += "</tr>";
+				$("#user-card tbody").append(row);
+				$("#cardcollapse").collapse("show");
+			}
+		}
+	});
 }
 function toggleNav() {
 	if($("#userspanel").prop("open") == "false") {

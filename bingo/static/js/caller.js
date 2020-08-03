@@ -22,23 +22,6 @@ $(document).ready(function () {
       '<td style="background-color: #333333;">' + bingo[indexInArray] + "</td>"
     ).prependTo($(valueOfElement));
   });
-  $.ajax({
-    url: http_scheme + window.location.host + "/cards",
-    contentType: "application/json",
-    dataType: "json",
-    success: function (result) {
-      var data = JSON.parse(result);
-      for (var i = 0; i < data.cards.length; i++) {
-        $("#card-ids").append(
-          '<button id="' +
-            data.cards[i] +
-            '" class="dropdown-item" onclick="toggleCollapse();">' +
-            data.cards[i] +
-            "</button>"
-        );
-      }
-    },
-  });
 
   const callerSocket = new WebSocket(
     ws_scheme + window.location.host + "/ws/call/"
@@ -91,7 +74,7 @@ $(document).ready(function () {
         $("#activity").append(
           '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>' +
             data.bingo_alert +
-            "</div>"
+            "</div>" 
         );
         $("#message").append(
           '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>Someone called bingo!</div>'
