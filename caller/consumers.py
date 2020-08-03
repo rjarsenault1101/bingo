@@ -145,7 +145,6 @@ class BingoConsumer(WebsocketConsumer):
         }))
 
     def logout(self, event):
-        logger.info("logout called")
         self.send(text_data=json.dumps({
             'type': 'logout',
             'users': User.objects.filter(first_name="True").exclude(is_staff=True).count(),

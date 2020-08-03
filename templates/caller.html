@@ -60,7 +60,6 @@ function getCard(id) {
 		dataType: "json",
 		success: function (result) {
 			var data = JSON.parse(result);
-			console.log(data);
 			// append rows to table body
 			for (var i = 0; i < data.numbers.length; i += 5) {
 				var row = '<tr class="cardRow">';

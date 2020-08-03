@@ -40,7 +40,6 @@ def get_active_users(request):
     users = User.objects.filter(first_name="True").exclude(
         is_staff=True).order_by('email')
     users = list(users)
-    logger.info(users)
     values = []
     for user in users:
         values.append({
