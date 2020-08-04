@@ -103,12 +103,12 @@
 				})
 			})
 		}
-		const activitySocket = new WebSocket(ws_scheme + window.location.host + '/ws/activity/');
+		const activitySocket = new WebSocket(ws_scheme + window.location.host + '/ws/active/');
 		activitySocket.onclose = function(e) {
 			console.error('Activity socket closed unexpectedly');
 		}
 		setInterval(function() {
-			activitySocket.send();
+			activitySocket.send(JSON.stringify({"value":"dummy"}));
 		}, 60*1000);
     </script>
     <script src="{% static 'js/user.js'%}"></script>

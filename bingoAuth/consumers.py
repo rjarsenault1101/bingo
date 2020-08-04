@@ -23,10 +23,14 @@ class ActiveConsumer(WebsocketConsumer):
         )
 
     # This gets called by the caller's new number button
-    def receive(self):
+    def receive(self, text_data):
         user = self.scope['user']
-        activity = WasActive.objects.get(
-            username=user.username, team=user.email)
+        activity = None
+        try:
+            activity = WasActive.objects.get(
+                username=user.username, team=user.email)
+        except WasActive.DoesNotExist:
+            pass
         if activity is None:
             activity = WasActive(username=user.username,
                                  team=user.email, duration=1)
