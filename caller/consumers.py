@@ -51,6 +51,12 @@ class CallConsumer(WebsocketConsumer):
                     'type': 'reset'
                 }
             )
+        if data['type'] == 'accept':
+            name = data['name']
+            team = data['team']
+            user = User.objects.get(username=name, email=team)
+            user.last_name = int(user.last_name) + 1
+            user.save()
 
     def reset(self, event):
         self.send(text_data=json.dumps({
@@ -133,6 +139,9 @@ class BingoConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'type': 'bingo',
                     'bingo_alert': f"[{event['card_id']}] - {event['name']} of the {event['team']} team called bingo!",
+                    'name': event['name'],
+                    'team': event['team'],
+                    'card_id': event['card_id'],
         }))
 
     def login(self, event):

@@ -94,7 +94,7 @@
 			}
         };
         numberSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
+            console.error('Number socket closed unexpectedly');
         };
 		function resetTable() {
 			$('#card tr').each(function(){
@@ -103,6 +103,13 @@
 				})
 			})
 		}
+		const activitySocket = new WebSocket(ws_scheme + window.location.host + '/ws/activity/');
+		activitySocket.onclose = function(e) {
+			console.error('Activity socket closed unexpectedly');
+		}
+		setInterval(function() {
+			activitySocket.send();
+		}, 60*1000);
     </script>
     <script src="{% static 'js/user.js'%}"></script>
 {% endblock %}

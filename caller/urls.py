@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.caller, name="caller"),
     path('clear', views.clear_calls, name='clear'),
     path('users', views.get_active_users, name='users'),
+    path('teams', views.get_teams_info, name='teams'),
 ]

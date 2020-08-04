@@ -1,12 +1,19 @@
+import json
+import logging
+
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.models import User
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db import connection
+from django.db.models import Sum
+from django.db.models.functions import Cast
+from django.db.models import IntegerField
 from init.models import Callable
 from .models import CalledNumber
-from django.contrib.auth.models import User
-import json
-from django.contrib.admin.views.decorators import staff_member_required
 
-import logging
 logger = logging.getLogger('bingo')
 logger.setLevel(logging.INFO)
 
@@ -44,9 +51,27 @@ def get_active_users(request):
     for user in users:
         values.append({
             'username': user.username,
-            'team': user.email
+            'team': user.email,
         })
     values = json.dumps({
         'users': values
     })
     return JsonResponse(values, safe=False)
+
+
+@staff_member_required
+def get_teams_info(request):
+    user_total = list(User.objects.values(
+        'username', 'email', 'last_name').order_by('email'))
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "select SUM(last_name::INTEGER), email from auth_user group by email;")
+        team_total = cursor.fetchall()
+        teams = []
+        for count, name in team_total:
+            team = {'team': name, 'users': [
+                user for user in user_total if user['email'] == name], 'count': count}
+            teams.append(team)
+    return render(request, '_modaltable.html', context={
+        'teams': teams
+    })

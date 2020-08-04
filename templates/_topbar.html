@@ -2,6 +2,9 @@
     <a class="navbar-brand text-light" href="#">UPEI NSO BINGO</a>
     {% if users is not None%}
     <div class="ml-auto">
+        <button type="button" class="btn btn-secondary" id="overviewbtn" data-toggle="modal" data-target="#overview">
+            <span>Overview</span>
+        </button>
         <button class="btn btn-secondary" onclick="toggleNav()" id="activeusers" type="button">
             <span id="activeusers">Active users: {{ users }}</span>
         </button>
