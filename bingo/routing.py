@@ -8,6 +8,7 @@ application = ProtocolTypeRouter({
         URLRouter([
             url(r"^ws/bingo/$", BingoConsumer),
             url(r"^ws/call/$", CallConsumer),
+            url(r"^ws/active/$", )
         ])
     ),
 })
