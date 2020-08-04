@@ -3,10 +3,10 @@ import json
 from django.contrib import auth
 from django.contrib.auth.models import User
 
-# Create your views here.
+
 def login(request):
-    if request.method == 'POST': 
-        username = request.POST['name']
+    if request.method == 'POST':
+        username = request.POST['name'].title()
         team = request.POST['team']
         user = None
         try:
@@ -15,7 +15,7 @@ def login(request):
             pass
 
         if user is None:
-            user = User(username=username, email=team)
+            user = User(username=username, email=team, last_name=0)
             user.save()
         auth.login(request, user)
         return redirect('index')
