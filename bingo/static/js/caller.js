@@ -1,3 +1,4 @@
+var callerSocket;
 $(document).ready(function () {
   if (window.location.protocol == "https:") {
     var http_scheme = "https://";
@@ -23,9 +24,7 @@ $(document).ready(function () {
     ).prependTo($(valueOfElement));
   });
 
-  const callerSocket = new WebSocket(
-    ws_scheme + window.location.host + "/ws/call/"
-  );
+  callerSocket = new WebSocket(ws_scheme + window.location.host + "/ws/call/");
   prevNum = 0;
   callerSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
@@ -70,13 +69,18 @@ $(document).ready(function () {
     const data = JSON.parse(e.data);
     switch (data.type) {
       case "bingo":
-        
         $("#activity").append(
-          '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>' +
+          '<div class="alert alert-success alert-dismissible text-center" role="alert"><button data-dismiss="alert" id="accept" onclick="accept(\'' +
+            data.card_id +
+            "','" +
+            data.name +
+            "','" +
+            data.team +
+            '\')" type="button" class="close mr-5"><span aria-hidden="true">&check;</span></button><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><span id="message">' +
             data.bingo_alert +
-            "</div>" 
+            "</span></div>"
         );
-        $("#message").append(
+        $("#message").html(
           '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>Someone called bingo!</div>'
         );
         break;
@@ -99,3 +103,14 @@ $(document).ready(function () {
     console.error("Bingo socket closed unexpectedly");
   };
 });
+function accept(id, name, team) {
+  console.log(id + " " + name + " " + team);
+  callerSocket.send(
+    JSON.stringify({
+      type: "accept",
+      id: id,
+      name: name,
+      team: team,
+    })
+  );
+}
