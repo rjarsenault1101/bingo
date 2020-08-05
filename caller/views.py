@@ -11,7 +11,7 @@ from django.db import connection
 from django.db.models import Sum
 from django.db.models.functions import Cast
 from django.db.models import IntegerField
-from init.models import Callable
+from init.models import Callable, WasActive
 from .models import CalledNumber
 
 logger = logging.getLogger('bingo')
