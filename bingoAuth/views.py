@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['name'].title()
+        username = request.POST['fname'] + " " + request.POST['lname']
+        username = username.title()
         team = request.POST['team']
         user = None
         try:
