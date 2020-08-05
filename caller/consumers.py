@@ -2,7 +2,7 @@ import json
 import random
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-from init.models import Callable
+from init.models import Callable, WasActive
 from .models import CalledNumber
 from django.contrib.auth.models import User
 import logging
@@ -55,8 +55,9 @@ class CallConsumer(WebsocketConsumer):
             name = data['name']
             team = data['team']
             user = User.objects.get(username=name, email=team)
-            user.last_name = int(user.last_name) + 1
-            user.save()
+            activity = WasActive.objects.get(user_id=user)
+            activity.bingos += 1
+            activity.save()
 
     def reset(self, event):
         self.send(text_data=json.dumps({

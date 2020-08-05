@@ -3,8 +3,8 @@ import logging
 
 from django.http import JsonResponse
 from django.shortcuts import render
+from init.models import WasActive
 from django.contrib.auth.models import User
-
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import connection
@@ -61,17 +61,20 @@ def get_active_users(request):
 
 @staff_member_required
 def get_teams_info(request):
-    user_total = list(User.objects.values(
-        'username', 'email', 'last_name').order_by('email'))
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "select SUM(last_name::INTEGER), email from auth_user group by email;")
-        team_total = cursor.fetchall()
-        teams = []
-        for count, name in team_total:
-            team = {'team': name, 'users': [
-                user for user in user_total if user['email'] == name], 'count': count}
-            teams.append(team)
+    user_total = list(WasActive.objects.all())
+    teams = dict()
+    for user in user_total:
+        if user.user.email not in teams:
+            teams[user.user.email] = dict()
+            teams[user.user.email]['users'] = []
+            teams[user.user.email]['count'] = 0
+        teams[user.user.email]['users'].append({
+            'name': user.user.username,
+            'bingos': user.bingos,
+            'duration': user.duration
+        })
+        teams[user.user.email]['count'] += user.bingos
+    logger.info(teams)
     return render(request, '_modaltable.html', context={
-        'teams': teams
+        'teams': teams.items()
     })

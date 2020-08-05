@@ -27,11 +27,11 @@ class ActiveConsumer(WebsocketConsumer):
         user = self.scope['user']
         activity = None
         try:
-            activity = WasActive.objects.get(id=user.id)
+            activity = WasActive.objects.get(user_id=user.id)
         except WasActive.DoesNotExist:
             pass
         if activity is None:
-            activity = WasActive(id=user.id, duration=1)
+            activity = WasActive(user_id=user.id, duration=1)
         else:
             activity.duration += 1
         activity.save()
