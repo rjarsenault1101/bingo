@@ -54,6 +54,11 @@ $("#searchcard").submit(function(event) {
 		//alert bad?
 	}
 })
+$("#resetall").click(function() {
+	if(confirm("Are you sure you want to clear out the database? This will remove all users and all activity")) {
+		$.get("/caller/reset")
+	} 
+})
 
 function getCard(id) {
 	$("#user-card tbody").empty();
