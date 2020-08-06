@@ -1,10 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-import random, json
-from django.http import JsonResponse
-from .models import Card, CardUser
-from caller.models import CalledNumber
-from django.contrib.auth.models import User
+import json
+import random
+
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+
+from caller.models import CalledNumber
+
+from .models import Card, CardUser
+
 
 @login_required(login_url="/login")
 def index(request):

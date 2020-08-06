@@ -1,11 +1,15 @@
 import json
-import random
-from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync
-from init.models import Callable, WasActive
-from .models import CalledNumber
-from django.contrib.auth.models import User
 import logging
+import random
+
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
+from django.contrib.auth.models import User
+
+from init.models import Callable, WasActive
+
+from .models import CalledNumber
+
 logger = logging.getLogger('bingo')
 logger.setLevel(logging.INFO)
 

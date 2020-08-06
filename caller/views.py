@@ -1,17 +1,13 @@
 import json
 import logging
 
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render
-from init.models import WasActive
-from django.contrib.auth.models import User
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.db import connection
-from django.db.models import Sum
-from django.db.models.functions import Cast
-from django.db.models import IntegerField
 from init.models import Callable, WasActive
+
 from .models import CalledNumber
 
 logger = logging.getLogger('bingo')
@@ -36,9 +32,13 @@ def caller(request):
 
 
 @staff_member_required
-def clear_calls(request):
+def reset(request):
     # This goes and deletes all from the called database
     CalledNumber.objects.all().delete()
+    WasActive.objects.all().delete()
+
+    User.objects.all().filter(is_staff=False).delete()
+
     return render(request, 'caller.html')
 
 

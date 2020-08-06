@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from .models import Callable
 from django.http import JsonResponse
+from django.shortcuts import render
+
+from .models import Callable
+
 
 # Create your views here.
 def numbers(request):

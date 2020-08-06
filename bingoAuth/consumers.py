@@ -1,7 +1,10 @@
-from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync
-from init.models import WasActive
 import logging
+
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
+
+from init.models import WasActive
+
 logger = logging.getLogger('bingo')
 logger.setLevel(logging.INFO)
 
