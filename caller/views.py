@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render
-
+from card.models import CardUser
 from init.models import Callable, WasActive
 
 from .models import CalledNumber
@@ -36,7 +36,7 @@ def reset(request):
     # This goes and deletes all from the called database
     CalledNumber.objects.all().delete()
     WasActive.objects.all().delete()
-
+    CardUser.objects.all().delete()
     User.objects.all().filter(is_staff=False).delete()
 
     return render(request, 'caller.html')
