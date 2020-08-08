@@ -10,9 +10,9 @@
 					<input type="text" class="form-control mb-4" name="fname" placeholder="(*) First Name" required>
 					<input type="text" class="form-control mb-4" name="lname" placeholder="(*) Last Name" required>
 				</div>
+				<label for="team">(*) Choose Team</label>
 				<div class="input-group">
-					<select class="form-control mb-4" name="team" required>
-						<option disabled selected>(*) Choose Team</option>
+					<select size="{{teams|length|add:1}}" id="team" class="form-control mb-4" name="team" required>
 						{% for team in teams %}
 						<option>{{ team|title }}</option>
 						{% endfor %}
