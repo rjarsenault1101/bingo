@@ -14,8 +14,9 @@
 					<select class="form-control mb-4" name="team" required>
 						<option disabled selected>(*) Choose Team</option>
 						{% for team in teams %}
-						<option>{{ team }}</option>
+						<option>{{ team|title }}</option>
 						{% endfor %}
+						<option>I don't have a team/I don't know what team I'm on</option>
 					</select>
 				</div>
 				<input type="submit" class="btn btn-success btn-rounded btn-block" value="Let's Play!" id="enterName"/>
