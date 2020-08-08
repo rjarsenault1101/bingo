@@ -15,3 +15,7 @@ class WasActive(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     duration = models.IntegerField(default=0)
     bingos = models.IntegerField(default=0)
+
+class Team(models.Model):
+    team = models.CharField(max_length=256)
+    
