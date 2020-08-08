@@ -1,7 +1,7 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-
+from init.models import Team
 
 def login(request):
     if request.method == 'POST':
@@ -19,4 +19,6 @@ def login(request):
             user.save()
         auth.login(request, user)
         return redirect('index')
-    return render(request, 'registration/login.html')
+    elif request.method == 'GET':
+        teams = list(Team.objects.all().values_list('team', flat=True))
+        return render(request, 'registration/login.html', context={'teams': teams})
