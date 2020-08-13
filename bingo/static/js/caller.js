@@ -80,9 +80,7 @@ $(document).ready(function () {
             data.bingo_alert +
             "</span></div>"
         );
-        $("#message").html(
-          '<div class="alert alert-success alert-dismissible text-center" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>Someone called bingo!</div>'
-        );
+        alert("Someone called bingo!");
         break;
       case "login":
         if (!$("#" + data.card_id).length) {
