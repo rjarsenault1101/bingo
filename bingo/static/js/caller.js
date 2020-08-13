@@ -104,7 +104,6 @@ $(document).ready(function () {
   };
 });
 function accept(id, name, team) {
-  console.log(id + " " + name + " " + team);
   callerSocket.send(
     JSON.stringify({
       type: "accept",
