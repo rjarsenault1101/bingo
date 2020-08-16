@@ -40,6 +40,7 @@ class CallConsumer(WebsocketConsumer):
             new_number = CalledNumber(
                 number=int(random.choice(callable_items)))
             new_number.save()
+            logger.info(f"New number {new_number} has been called")
             async_to_sync(self.channel_layer.group_send)(
                 "numbercalling",
                 {
@@ -49,6 +50,7 @@ class CallConsumer(WebsocketConsumer):
             )
         if data['type'] == 'reset':
             CalledNumber.objects.all().delete()
+            logger.info("Resetting the game")
             async_to_sync(self.channel_layer.group_send)(
                 "numbercalling",
                 {
@@ -61,6 +63,7 @@ class CallConsumer(WebsocketConsumer):
             user = User.objects.get(username=name, email=team)
             activity = WasActive.objects.get(user_id=user)
             activity.bingos += 1
+            logger.info(f"Bingo from {name}, {team} has been accepted")
             activity.save()
 
     def reset(self, event):
@@ -86,80 +89,33 @@ class BingoConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(
             "bingo", self.channel_name
         )
-        async_to_sync(self.channel_layer.group_add)(
-            "login", self.channel_name
-        )
         self.accept()
-        user = User.objects.get(
-            username=self.scope['user'].username, email=self.scope['user'].email)
-        user.first_name = "True"
-        user.save()
 
     def disconnect(self, code):
         super()
-        if self.scope['user'].is_staff == False:
-            user = User.objects.get(
-                username=self.scope['user'].username, email=self.scope['user'].email)
-            user.first_name = "False"
-            user.save()
-        async_to_sync(self.channel_layer.group_send)(
-            "login", {
-                'type': 'logout'
-            }
-        )
         async_to_sync(self.channel_layer.group_discard)(
             "bingo", self.channel_name
-        )
-        async_to_sync(self.channel_layer.group_discard)(
-            "login", self.channel_name
-        )
-        async_to_sync(self.channel_layer.group_send)(
-            "logout", {
-                'type': 'logout'
-            }
         )
 
     def receive(self, text_data):
         text_data = json.loads(text_data)
         if text_data['type'] == 'bingo':
+            logger.info(f"{text_data['name']} of {text_data['team']} called bingo")
             async_to_sync(self.channel_layer.group_send)(
                 "bingo", {
                     'type': 'bingo',
                     'name': text_data['name'],
                     'team': text_data['team'],
-                    'card_id': text_data['card_id']
-                }
-            )
-        if text_data['type'] == 'login':
-            async_to_sync(self.channel_layer.group_send)(
-                "login", {
-                    'type': 'login',
-                    'name': text_data['name'],
-                    'team': text_data['team'],
                     'card_id': text_data['card_id'],
+                    'leader': text_data['leader'] == 'True'
                 }
             )
 
     def bingo(self, event):
         self.send(text_data=json.dumps({
             'type': 'bingo',
-                    'bingo_alert': f"[{event['card_id']}] - {event['name']} of the {event['team']} team called bingo!",
-                    'name': event['name'],
-                    'team': event['team'],
-                    'card_id': event['card_id'],
-        }))
-
-    def login(self, event):
-        self.send(text_data=json.dumps({
-            'type': 'login',
+            'bingo_alert': f"[{event['card_id']}] - {'leader/volunteer ' if event['leader'] else ''} {event['name']} {'of {}'.format(event['team']) if 'no' not in event['team'] else ''} called bingo!",
             'name': event['name'],
             'team': event['team'],
             'card_id': event['card_id'],
-            'users': User.objects.filter(first_name="True").exclude(is_staff=True).count(),
-        }))
-
-    def logout(self, event):
-        self.send(text_data=json.dumps({
-            'type': 'logout',
-            'users': User.objects.filter(first_name="True").exclude(is_staff=True).count(),
         }))
