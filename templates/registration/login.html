@@ -5,16 +5,34 @@
 		<form method="POST" class="text-center border border-light p-3 mb-5 bg-white rounded">
 			{% csrf_token %}
 			<div class="form-group p-5">
+				{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-danger text-center" role="alert">
+        				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+						{{ message }}
+					</div>
+				{% endfor %}
+				{% endif %}
 				<p class="h4 mb-4">Enter your Name and Team<p>
 				<div class="input-group">
-					<input type="text" class="form-control mb-4" name="fname" placeholder="(*) First Name" required>
-					<input type="text" class="form-control mb-4" name="lname" placeholder="(*) Last Name" required>
+					<input type="text" class="form-control" value="{{firstname}}" name="fname" placeholder="(*) First Name" required>
+					<input type="text" class="form-control" value="{{lastname}}" name="lname" placeholder="(*) Last Name" required>
+				</div>
+				<div class="input-group">
+					<input id="studentid" type="text" class="form-control mb-4" name="studentid" placeholder="(*) Student ID #" required>
+				</div>
+				<div class="input-group">
+					<select  id="leader" class="form-control mb-4" name="leader" required>
+						<option selected disabled>(*) Select one of the following</option>
+						<option>I'm a first year student at UPEI</option>
+						<option>I'm an NSO leader or NSO volunteer</option>
+					</select>
 				</div>
 				<label for="team">(*) Choose Team</label>
 				<div class="input-group">
 					<select size="{{teams|length|add:1}}" id="team" class="form-control mb-4" name="team" required>
-						{% for team in teams %}
-						<option>{{ team|title }}</option>
+						{% for t in teams %}
+						<option {% ifequal team t|title %} selected {% endifequal %}>{{ t|title }}</option>
 						{% endfor %}
 						<option>I don't have a team/I don't know what team I'm on</option>
 					</select>
