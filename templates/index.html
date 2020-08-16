@@ -4,7 +4,7 @@
 	<div class="container">
 		
 		<div class="row">
-			<div class="col text-center"><h1>Welcome, {{user.username|title}}, of the {{user.email}} team</h1></div>
+			<div class="col text-center"><h1>Welcome, {{user.username|title}}{% ifnotequal user.email 'no team' %}, of the {{user.email}} team {% endifnotequal %}</h1></div>
 		</div>
 		<div class="row p-5">
 			<div class="col-md-6 offset-md-3">
@@ -55,33 +55,12 @@
 				'type': 'bingo',
 				'name': '{{ user.username }}',
 				'team': '{{ user.email }}',
+				'leader': '{{ user.first_name }}',
 				'card_id': '{{ card_id }}'
 			}));
   			audio.play();
 			alert('You\'ve called bingo!');
 			$(this).prop('disabled',true);
-		});
-		// Make the function wait until the connection is made...
-		function waitForSocketConnection(socket, callback){
-			setTimeout(
-				function () {
-					if (socket.readyState === 1) {
-						if (callback != null){
-							callback();
-						}
-					} else {
-						waitForSocketConnection(socket, callback);
-					}
-
-				}, 5); // wait 5 milisecond for the connection...
-		}
-		waitForSocketConnection(bingoSocket, function() {
-			bingoSocket.send(JSON.stringify({
-				'type': 'login',
-				'name': '{{ user.username }}',
-				'team': '{{ user.email }}',
-				'card_id': '{{ card_id }}'
-			}))
 		});
         const numberSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/');
 		numberSocket.onmessage = function(e) {
@@ -109,7 +88,7 @@
 		}
 		setInterval(function() {
 			activitySocket.send(JSON.stringify({"value":"dummy"}));
-		}, 60*1000);
+		}, 300*1000);
     </script>
     <script src="{% static 'js/user.js'%}"></script>
 {% endblock %}

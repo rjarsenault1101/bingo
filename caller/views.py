@@ -21,13 +21,10 @@ def caller(request):
     numbers = [int(i) for i in numbers]
     called = [int(i) for i in called]
     numbers.sort()
-    users = User.objects.filter(first_name="True").exclude(
-        is_staff=True).count()
     return render(request, 'caller.html', {
         'called': called,
         'numbers': numbers,
         'col_count': len(numbers)/5,
-        'users': users
     })
 
 
@@ -43,23 +40,6 @@ def reset(request):
 
 
 @staff_member_required
-def get_active_users(request):
-    users = User.objects.filter(first_name="True").exclude(
-        is_staff=True).order_by('email')
-    users = list(users)
-    values = []
-    for user in users:
-        values.append({
-            'username': user.username,
-            'team': user.email,
-        })
-    values = json.dumps({
-        'users': values
-    })
-    return JsonResponse(values, safe=False)
-
-
-@staff_member_required
 def get_teams_info(request):
     user_total = list(WasActive.objects.all())
     teams = dict()
@@ -69,12 +49,11 @@ def get_teams_info(request):
             teams[user.user.email]['users'] = []
             teams[user.user.email]['count'] = 0
         teams[user.user.email]['users'].append({
-            'name': user.user.username,
+            'name': f"{user.user.username} (id# {user.user.last_name})",
             'bingos': user.bingos,
             'duration': user.duration
         })
         teams[user.user.email]['count'] += user.bingos
-    logger.info(teams)
     return render(request, '_modaltable.html', context={
         'teams': teams.items()
     })

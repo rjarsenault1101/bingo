@@ -13,7 +13,7 @@
             <td class='text-white bg-dark' rowspan={{value.users|length|add:1}}><b>{{ key }}</b></td>
         </tr>
         {% for user in value.users %}
-        <tr class="text-right">
+        <tr>
             <td>{{ user.name }}</td>
             <td>{{ user.bingos }}</td>
             <td>{{ user.duration }}</td>
