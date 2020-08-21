@@ -47,7 +47,9 @@ $(document).ready(function () {
       if (!navigator.onLine) {
         alert("You are offline. Please connect to the Internet and try again.");
       } else {
-        callerSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/');
+        callerSocket = new WebSocket(
+          ws_scheme + window.location.host + "/ws/call/"
+        );
       }
     }
   };
@@ -74,18 +76,28 @@ $(document).ready(function () {
     const data = JSON.parse(e.data);
     switch (data.type) {
       case "bingo":
-        $("#activity").append(
-          '<div class="alert alert-success alert-dismissible text-center" role="alert"><button data-dismiss="alert" id="accept" onclick="accept(\'' +
-            data.card_id +
-            "','" +
-            data.name +
-            "','" +
-            data.team +
-            '\')" type="button" class="close mr-5"><span aria-hidden="true">&check;</span></button><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><span id="message">' +
-            data.bingo_alert +
-            "</span></div>"
-        );
-        alert("Someone called bingo!");
+        exists = false;
+        $("#activity > div").each(function (index, element) {
+          if (element.id == data.card_id) {
+            exists = true;
+          }
+        });
+        if (!exists) {
+          $("#activity").append(
+            '<div id="' +
+              data.card_id +
+              '" class="alert alert-success alert-dismissible text-center" role="alert"><button data-dismiss="alert" id="accept" onclick="accept(\'' +
+              data.card_id +
+              "','" +
+              data.name +
+              "','" +
+              data.team +
+              '\')" type="button" class="close mr-5"><span aria-hidden="true">&check;</span></button><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button><span id="message">' +
+              data.bingo_alert +
+              "</span></div>"
+          );
+          alert("Someone called bingo!");
+        }
         break;
     }
   };
@@ -94,9 +106,12 @@ $(document).ready(function () {
       if (!navigator.onLine) {
         alert("You are offline. Please connect to the Internet and try again.");
       } else {
-        bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
+        bingoSocket = new WebSocket(
+          ws_scheme + window.location.host + "/ws/bingo/"
+        );
       }
-    }  };
+    }
+  };
 });
 function accept(id, name, team) {
   callerSocket.send(

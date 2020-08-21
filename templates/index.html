@@ -33,11 +33,13 @@
 					</table>
 				</table>			
 				<button id="bingo" class="btn btn-success btn-block" >BINGO!</button>
+				<button id="reset" class="btn btn-secondary btn-block">Reset card</button>
 			</div>
 		</div>
 	</div>
 
 	<script>
+		
 		if (window.location.protocol == "https:") {
 			var http_scheme = "https://";
 			var ws_scheme = "wss://";
@@ -55,6 +57,7 @@
 				}
 			}		
 		}
+		$("#reset").click(function(e) {resetTable()});
 		$("#bingo").click(function(e) {
 			var audio = new Audio('{% static "bingo.mp3" %}');
 			bingoSocket.send(JSON.stringify({
@@ -66,7 +69,6 @@
 			}));
   			audio.play();
 			alert('You\'ve called bingo!');
-			$(this).prop('disabled',true);
 		});
         const numberSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/');
 		numberSocket.onmessage = function(e) {
