@@ -43,8 +43,13 @@ $(document).ready(function () {
     }
   };
   callerSocket.onclose = function (e) {
-    console.error("Caller socket closed unexpectedly");
-    console.error(e);
+    if (e.code != 1000) {
+      if (!navigator.onLine) {
+        alert("You are offline. Please connect to the Internet and try again.");
+      } else {
+        callerSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/');
+      }
+    }
   };
 
   document.querySelector("#callnumber").onclick = function (e) {
@@ -82,24 +87,16 @@ $(document).ready(function () {
         );
         alert("Someone called bingo!");
         break;
-      case "login":
-        if (!$("#" + data.card_id).length) {
-          $("#card-ids").append(
-            '<button id="' +
-              data.card_id +
-              '" class="dropdown-item" onclick="toggleCollapse();">' +
-              data.card_id +
-              "</button>"
-          );
-        }
-      case "logout":
-        users = data.users;
-        $("#activeusers").text("Active users: " + users);
     }
   };
   bingoSocket.onclose = function (e) {
-    console.error("Bingo socket closed unexpectedly");
-  };
+    if (e.code != 1000) {
+      if (!navigator.onLine) {
+        alert("You are offline. Please connect to the Internet and try again.");
+      } else {
+        bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
+      }
+    }  };
 });
 function accept(id, name, team) {
   callerSocket.send(

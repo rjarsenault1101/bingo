@@ -47,7 +47,13 @@
 		}
 		const bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
 		bingoSocket.onclose = function(e) {
-			console.error('Bingo socket closed unexpectedly');
+			if (e.code != 1000) {
+				if (!navigator.onLine) {
+					alert("You are offline. Please connect to the Internet and try again.");
+				} else {
+					bingoSocket = new WebSocket(ws_scheme + window.location.host + '/ws/bingo/');
+				}
+			}		
 		}
 		$("#bingo").click(function(e) {
 			var audio = new Audio('{% static "bingo.mp3" %}');
@@ -73,7 +79,13 @@
 			}
         };
         numberSocket.onclose = function(e) {
-            console.error('Number socket closed unexpectedly');
+			if (e.code != 1000) {
+				if (!navigator.onLine) {
+					alert("You are offline. Please connect to the Internet and try again.");
+				} else {
+					numberSocket = new WebSocket(ws_scheme + window.location.host + '/ws/call/');
+				}
+			}
         };
 		function resetTable() {
 			$('#card tr').each(function(){
