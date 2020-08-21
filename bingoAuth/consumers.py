@@ -4,6 +4,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
 from init.models import WasActive
+from django.db import connections
 
 logger = logging.getLogger('bingo')
 logger.setLevel(logging.INFO)
@@ -37,3 +38,4 @@ class ActiveConsumer(WebsocketConsumer):
         else:
             activity.duration += 1
         activity.save()
+        connections.close_all()

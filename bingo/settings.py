@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import dj_database_url
 import os
 import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -42,9 +43,10 @@ INSTALLED_APPS = [
     'caller',
     'init',
     'bingoAuth',
+    'mathfilters',
 ]
 
-ASGI_APPLICATION='bingo.routing.application'
+ASGI_APPLICATION = 'bingo.routing.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -144,5 +146,5 @@ STATICFILES_DIRS = [
 ]
 django_heroku.settings(locals())
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'] = dj_database_url.config(
+    conn_max_age=60, ssl_require=True)

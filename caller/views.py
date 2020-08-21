@@ -21,6 +21,7 @@ def caller(request):
     numbers = [int(i) for i in numbers]
     called = [int(i) for i in called]
     numbers.sort()
+    logger.info("Loading caller view")
     return render(request, 'caller.html', {
         'called': called,
         'numbers': numbers,
@@ -35,7 +36,7 @@ def reset(request):
     WasActive.objects.all().delete()
     CardUser.objects.all().delete()
     User.objects.all().filter(is_staff=False).delete()
-
+    logger.info("Resetting everything. Good bye!")
     return render(request, 'caller.html')
 
 

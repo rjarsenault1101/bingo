@@ -1,3 +1,4 @@
+{% load mathfilters %}
 <table id="teams" class='table table-bordered table-light mx-2'>
     <thead>
         <tr>
@@ -16,13 +17,13 @@
         <tr>
             <td>{{ user.name }}</td>
             <td>{{ user.bingos }}</td>
-            <td>{{ user.duration }}</td>
+            <td>{{ user.duration|mul:5 }}</td>
         </tr>
         {% endfor %}
         <tr class="text-right">
             <td>Total:</td>
             <td><span class='text-left'>Users: </span>{{ value.users|length }}</td>
-            <td><span class='text-left'>Bingos: </span>{{ value.count }}</td>
+            <td><span class='text-left'>Bingos: </span>{{ value.count}}</td>
             <td></td>
         </tr>
     {% endfor %}
