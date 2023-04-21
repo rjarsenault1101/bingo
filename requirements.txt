@@ -36,7 +36,7 @@ pytz==2020.1
 rope==0.17.0
 service-identity==18.1.0
 six==1.15.0
-sqlparse==0.3.1
+sqlparse==0.4.4
 toml==0.10.1
 Twisted==22.4.0
 txaio==20.4.1
